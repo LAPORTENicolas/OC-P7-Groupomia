@@ -3,6 +3,7 @@ const jwt           = require('jsonwebtoken');
 const connection    = require('../bdd');
 
 exports.login       = (req, res) => {
+
     const email     = req.body.email;
     const password  = req.body.password;
 
@@ -44,7 +45,9 @@ exports.register    = (req, res) => {
                     bcrypt.hash(password, 10)
                         .then(hash => {
                             con.query('INSERT INTO user SET username = ?, email = ?, password = ?, date_register = NOW()', [username, email, hash])
-                            res.status(201).json({message: 'Utilisateur créer'})
+                                .then(data => res.status(200).json(data))
+                                .catch(err => res.status(200).json(err));
+                            //res.status(201).json({message: 'Utilisateur créer'})
                         })
                         .catch(err => res.status(500).json({err}))
                 })
