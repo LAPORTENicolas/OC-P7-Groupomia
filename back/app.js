@@ -2,7 +2,8 @@ const express       = require('express');
 const helmet        = require('helmet');
 const bodyParser    = require('body-parser');
 const path          = require('path');
-const routeAuth     = require('./routes/authStuff');
+const routeAuth     = require('./routes/authRoute');
+const routePubli    = require('./routes/publiRoute');
 const app           = express();
 
 app.use(express.json());
@@ -17,6 +18,7 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use('/upload', express.static(path.join(__dirname, 'upload')));
 app.use('/auth', routeAuth);
 
 module.exports      = app;

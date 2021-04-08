@@ -18,6 +18,7 @@
     "mariadb": "^2.5.3",
     "mongoose": "^5.12.3",
     "mongoose-unique-validator": "^2.0.3",
+    "multer": "^1.4.2",
     "mysql": "^2.18.1",
     "tedious": "^11.0.7"
   }
