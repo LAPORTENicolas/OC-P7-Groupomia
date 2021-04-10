@@ -13,7 +13,9 @@ class Form extends Component {
             loading: false,
             btn: false,
             printErrorText: '',
-            printError: false
+            printError: false,
+            printSuccessText: '',
+            printSuccess: false
         }
     }
 
@@ -44,103 +46,46 @@ class Form extends Component {
 
     validForm() {
         this.setState({loading: true, printError: false, printSuccess: false})
-        const form      = [...this.props.form];
-        const data      = {};
+        let data        = {};
         let err         = 0;
-        let url         = '';
-        form.map(value => {
-            const regExp    = new RegExp(value.regExp)
-            const val       = value.value;
-            if (!regExp.test(val) || val.length > 30){
-                console.log('er');
-                err++;
-            } else {
-                data[value.name] = value.value;
-            }
+        this.state.form.form.map(value => {
+            const regExp = new RegExp(value.regExp);
+            if (regExp.test(document.getElementById(value.name).value)){
+                data[value.name] = (document.getElementById(value.name).value)
+            } else { err++; }
         })
-
         if (err > 0) {
-            this.setState({loading: false, printError: true, printErrorText: 'Le formulaire n\'est pas remplis correctement'});
-        } else {
-            if (this.state.formWanted === 'login'){
-                url = "http://localhost:3001/auth/login";
-            } else {
-                url = "http://localhost:3001/auth/register";
-            }
-            fetch(url, {method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(data) })
+            this.setState({loading: false, printError: true, printErrorText: 'Formulaire invalide'})
+        }  else {
+            fetch(this.state.form.url, {method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(data) })
                 .then(res => {
-                  if (res.ok) {
-                      if (this.state.formWanted === 'login') {
-                          res.json()
-                              .then(res => {
-                                  const userId  = res.userId;
-                                  const token   = res.token;
-                                  const data    = JSON.stringify({userId: userId, token: token});
-                                  sessionStorage.setItem('user', data);
-                                  this.props.login();
-                                  this.setState({loading: false});
-                              })
-                              .catch(err => console.log(err)) //this.setState({printError: true, printErrorText: err.error, loading: false}))
-                      } else {
-                        res.json()
-                          .then(res => res.code ? this.setState({printError: true, printErrorText: res.code, loading: false}) : this.setState({printSuccess: true, printSuccessText: 'Compte créer', loading: false}))
-                      }
-                  } else {
-                      res.json()
-                          .then(err => this.setState({printError: true, printErrorText: err.error, loading: false}))
-                  }
+                    res.json()
+                        .then(json => {
+                            if (res.ok) {
+                                this.setState({loading: false, printSuccess: true, printSuccessText: 'Formualire envoyé'})
+                                this.props.successLogin(json);
+                            } else {
+                                this.setState({loading: false, printError: true, printErrorText: 'Une erreur est survenue'});
+                            }
+                        })
                 })
         }
-        /*
-        const regExp0   = new RegExp(this.state.form[0].regExp)
-        const regExp1   = new RegExp(this.state.form[1].regExp)
-        const email     = this.state.form[0].value;
-        const password  = this.state.form[1].value;
-        const data      = JSON.stringify({email: email, password: password});
-
-        if (this.state.formWanted === 'login') {
-            if (regExp0.test(email) && regExp1.test(password) && email.length <= 30 && password.length <= 30) {
-                fetch('http://localhost:3001/auth/login', {
-                    method: 'POST',
-                    headers: {'content-type': 'application/json'},
-                    body: data
-                })
-                    .then(res => {
-                        if (res.ok) {
-                            res.json()
-                                .then(data => console.log(data))
-                        } else {
-                            form[0].className[1] = 'error';
-                            form[1].className[1] = 'error';
-                            res.json()
-                                .then(err => this.setState({printError: true, printErrorText: err.error}))
-                        }
-                    })
-                    .catch(err => console.log(err));
-            } else {
-                this.setState({printError: true, printErrorText: 'Le formulaire n\'est pas remplis correctement'})
-            }
-        } else {
-        }
-        this.setState({loading: false})
-         */
     }
 
     render() {
-        const form = this.props.form.map((value, key) => {
-            return <Input type={value.type} className={value.className.join(' ')} name={value.name}
-                          placeholder={value.placeholder} value={value.value} change={this.changeHandle.bind(this, key)}
-                          key={key}/>
+        const form = this.state.form.form.map((value, key) => {
+            return  <Input type={value.type} className={value.className.join(' ')} id={value.name} name={value.name}
+                           placeholder={value.placeholder} value={value.value} key={key}/>
         })
+
         return <div className='form-login'>
             {this.state.loading ? <Loader/> : <>
-                <h1>{this.state.formWanted === 'login' ? 'Connexion' : 'Inscription'}</h1>
+                <h1>{this.state.form.title}</h1>
             {this.state.printError ? <Alert type='danger'>{this.state.printErrorText}</Alert> : null }
             {this.state.printSuccess ? <Alert type='success'>{this.state.printSuccessText}</Alert> : null }
             {form}
-                <a onClick={this.changeForm.bind(this)}>{this.state.formWanted === 'login' ? 'Pas de compte ?' : 'Déjà inscris ?'} cliquez-ici</a>
-                <Button disable={this.state.btn}
-                validationForm={this.validForm.bind(this)}>{this.state.formWanted === 'login' ? 'Connexion' : 'Inscription'}</Button>
+                <p onClick={this.changeForm.bind(this)}>{this.state.formWanted === 'login' ? 'Pas de compte ?' : 'Déjà inscris ?'} cliquez-ici</p>
+                <Button disable={this.state.btn} validationForm={this.validForm.bind(this)}>{this.state.form.title}</Button>
             </>}
         </div>
 
