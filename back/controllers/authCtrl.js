@@ -17,6 +17,7 @@ exports.login       = (req, res) => {
                         bcrypt.compare(password, rows['0'].password)
                             .then(verif => verif ? res.status(200).json({
                                 userId: rows['0'].id,
+                                username: rows['0'].username,
                                 token: jwt.sign(
                                     { userId: rows['0'].id },
                                 'RANDOM_TOKEN_SECRET',
@@ -46,12 +47,12 @@ exports.register    = (req, res) => {
                         .then(hash => {
                             con.query('INSERT INTO user SET username = ?, email = ?, password = ?, date_register = NOW()', [username, email, hash])
                                 .then(data => res.status(200).json(data))
-                                .catch(err => res.status(200).json(err));
+                                .catch(err => res.status(400).json({err}));
                             //res.status(201).json({message: 'Utilisateur créer'})
                         })
                         .catch(err => res.status(500).json({err}))
                 })
-                .catch(_ => res.status(401).json({error: 'Cette email est déjà utliser'}));
+                .catch(err => res.status(401).json({err}));
         })
 }
 
