@@ -23,7 +23,7 @@ class Login extends Component {
                       {
                           type: 'password',
                           name: 'password',
-                          value: '',
+                          value: 'password',
                           placeholder: 'Mot de passe',
                           className: ['form-control'],
                           regExp: '^([a-zA-Z0-9&éèà]+)$'
@@ -38,7 +38,7 @@ class Login extends Component {
                         {
                             type: 'email',
                             name: 'email',
-                            value: '',
+                            value: 'email@email.com',
                             placeholder: 'Adresse email',
                             className: ['form-control'],
                             regExp: '^[0-9A-Za-z._-]+@{1}[0-9a-z.-]{2,}[.]{1}[a-z]{2,5}$'
@@ -46,7 +46,7 @@ class Login extends Component {
                         {
                             type: 'text',
                             name: 'username',
-                            value: '',
+                            value: 'username',
                             placeholder: 'Nom d\'utilisateur',
                             className: ['form-control'],
                             regExp: '^([a-zA-Z0-9]+)$'
@@ -54,7 +54,7 @@ class Login extends Component {
                         {
                             type: 'password',
                             name: 'password',
-                            value: '',
+                            value: 'password',
                             placeholder: 'Mot de passe',
                             className: ['form-control'],
                             regExp: '^([a-zA-Z0-9-&éèà]+)$'
@@ -72,16 +72,44 @@ class Login extends Component {
             this.setState({formWanted: 'login'});
         }
     }
-//this.props.successLogin
+
+    cb(data) {
+        let url         = '';
+        let errorMsg    = 'Errur inconue';
+
+        if (this.state.formWanted === 'login'){
+            url         = 'http://localhost:3001/auth/login';
+            errorMsg    = 'Aucun compte trouvé';
+        } else {
+            url         = 'http://localhost:3001/auth/register';
+            errorMsg    = 'L\'email est déjà utlisé';
+        }
+
+        fetch(url, {method: 'POST', headers:{ 'content-type': 'application/json' }, body: JSON.stringify(data) })
+            .then(res => {
+                if (res.ok) {
+                    res.json()
+                        .then(json => {
+                            this.state.formWanted === 'login' ? this.props.successLogin(json) : this.setState({formWanted: 'register'})
+                        })
+                } else {
+                    console.log(errorMsg);
+                }
+            })
+
+        return true;
+    }
+
     changeForm() {
         const form = this.state.formWanted === 'login' ? 'register' : 'login';
         this.setState({formWanted: form});
-        return form;
     }
 
     render() {
         return <div className='container-flex-center container-flex-center-background'>
-            <Form successLogin={this.formSuccess.bind(this)} formWanted={this.state.formWanted} changeForm={this.changeForm.bind(this)} form={this.state.form[this.state.formWanted]}/>
+            <Form className={['form-login']} callBack={this.cb.bind(this)} onSuccess={this.formSuccess.bind(this)} formWanted={this.state.formWanted} form={this.state.form[this.state.formWanted]}>
+                <p onClick={this.changeForm.bind(this)}> {this.state.formWanted === 'login' ? 'Pas de compte, cliquez ici' : 'Déjà inscris, cliquez ici'}</p>
+            </Form>
         </div>
     }
 }
