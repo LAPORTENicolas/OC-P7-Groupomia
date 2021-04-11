@@ -65,14 +65,6 @@ class Login extends Component {
         }
     }
 
-    formSuccess(data) {
-        if(this.state.formWanted === 'login') {
-            this.props.successLogin(data);
-        } else {
-            this.setState({formWanted: 'login'});
-        }
-    }
-
     cb(data) {
         let url         = '';
         let errorMsg    = 'Errur inconue';
@@ -107,7 +99,7 @@ class Login extends Component {
 
     render() {
         return <div className='container-flex-center container-flex-center-background'>
-            <Form className={['form-login']} callBack={this.cb.bind(this)} onSuccess={this.formSuccess.bind(this)} formWanted={this.state.formWanted} form={this.state.form[this.state.formWanted]}>
+            <Form className={['form-login']} callBack={this.cb.bind(this)} formWanted={this.state.formWanted} form={this.state.form[this.state.formWanted]}>
                 <p onClick={this.changeForm.bind(this)}> {this.state.formWanted === 'login' ? 'Pas de compte, cliquez ici' : 'Déjà inscris, cliquez ici'}</p>
             </Form>
         </div>

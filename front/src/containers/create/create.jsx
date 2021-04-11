@@ -43,7 +43,7 @@ class Create extends Component {
 
     render() {
         return <div className={'container-fluid'}>
-            <Form className={['form-login']} onSuccess={this.onSuccess.bind(this)} onError={this.onError.bind(this)} formWanted={'Publication'} form={this.state.form['publi']} />
+            <Form className={['form-login']} formWanted={'Publication'} form={this.state.form['publi']} />
         </div>
     }
 
