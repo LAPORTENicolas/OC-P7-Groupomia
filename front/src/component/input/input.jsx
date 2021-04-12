@@ -10,16 +10,20 @@ const Input = (props) => {
         e.preventDefault();
         setState(e.target.value);
 
-        if (regExp.test(e.target.value)){
-            className[1]    = 'sucess';
-        } else {
-            className[1]    = 'error';
+        switch(e.target.type) {
+            case 'file':
+                break;
+
+            default:
+                regExp.test(e.target.value) ? className[1] = 'success' : className[1] = 'error'
+            break;
         }
+        console.log(value);
     }
 
     switch (props.type) {
         case 'textarea':
-            input = <textarea className={className.join(' ')} name={props.name} id={props.id} onChange={onChange}>{props.placeholder}</textarea>;
+            input = <textarea className={className.join(' ')} name={props.name} id={props.id} onChange={onChange} >{value}</textarea>;
             break;
 
         case 'file':
@@ -27,7 +31,7 @@ const Input = (props) => {
             break;
 
         default:
-            input = <input type={props.type} className={className.join(' ')} name={props.name} id={props.id} onChange={onChange} placeholder={props.placeholder} value={props.value}/>;
+            input = <input type={props.type} className={className.join(' ')} name={props.name} id={props.id} onChange={onChange} placeholder={props.placeholder} value={value}/>;
             break;
     }
 

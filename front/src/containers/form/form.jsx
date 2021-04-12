@@ -25,7 +25,7 @@ class Form extends Component {
         return null;
     }
 
-    validForm() {
+    async validForm() {
         this.setState({loading: true, printError: false, printSuccess: false})
         let data        = {};
         let err         = 0;
@@ -34,21 +34,22 @@ class Form extends Component {
         this.state.form.form.map(value => {
             const regExp = new RegExp(value.regExp);
             if (value.type === 'file') {
-
+                const   file  = document.getElementById(value.name);
+                const   fr    = new FileReader();
+                fr.readAsText(file.files[0]);
+                fr.onload = _ => sessionStorage.setItem('file', fr.result);
+                console.log(sessionStorage.getItem('file'));
             } else {
                 if (regExp.test(document.getElementById(value.name).value)){
                     data[value.name] = (document.getElementById(value.name).value)
                 } else { err++; }
             }
         })
-
         // Si il y a un/des d'erreur(s) Affiche une errur sinon excute le callback
         if (err > 0) {
             this.setState({loading: false, printError: true, printErrorText: 'Formulaire invalide'})
         }  else {
-            if (this.props.callBack(data)) {
-                console.log('Formulaire envoyé');
-            }
+            await this.props.callBack(data) ? this.setState({loading: false, printSuccess: true, printSuccessText: this.state.form.successMessage}) : this.setState({loading: false, printError: true, printErrorText: 'Une erreur est survenue'})
         }
     }
 
