@@ -19,6 +19,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/upload', express.static(path.join(__dirname, 'upload')));
+app.use('/publication', routePubli);
 app.use('/auth', routeAuth);
 
 module.exports      = app;
