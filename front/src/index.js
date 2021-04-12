@@ -18,7 +18,8 @@ class User extends Component{
 
   componentDidMount() {
     if (localStorage.getItem('user')) {
-      const user = localStorage.getItem('user')
+      const user = JSON.parse(localStorage.getItem('user'));
+      console.log(user);
       this.setState({
         logged: true,
         username: user.username,
@@ -28,8 +29,16 @@ class User extends Component{
     }
   }
 
-  login(data) {
-    this.setState({userId: data.userId, username: data.username, token: data.token, logged: true});
+  getHeader() {
+    return {'authorization': 'Baerer ' + this.state.token, 'content-type': 'application/json'};
+  }
+
+   login(res) {
+    res.json()
+        .then(data => {
+          localStorage.setItem('user', JSON.stringify(data));
+          this.setState({logged: true, username: data.username, token: data.token, userId: data.userId});
+        })
   }
 
   logout() {
@@ -38,7 +47,7 @@ class User extends Component{
   }
 
   render() {
-    return this.state.logged ? <App logout={this.logout.bind(this)} /> : <Login successLogin={this.login.bind(this)}/>
+    return this.state.logged ?  <App getHeader={this.getHeader.bind(this)} username={this.state.username} userId={this.state.userId} logout={this.logout.bind(this)} /> : <Login successLogin={this.login.bind(this)}/>
   }
 
 }

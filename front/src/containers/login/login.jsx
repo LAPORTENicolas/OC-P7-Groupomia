@@ -11,6 +11,7 @@ class Login extends Component {
                     name: 'login',
                     title: 'Connexion',
                     url: 'http://localhost:3001/auth/login',
+                    successMessage: '',
                     form: [
                       {
                           type: 'email',
@@ -34,6 +35,7 @@ class Login extends Component {
                     name: 'register',
                     title: 'Inscription',
                     url: 'http://localhost:3001/auth/register',
+                    successMessage: 'Inscription reussie',
                     form: [
                         {
                             type: 'email',
@@ -65,31 +67,27 @@ class Login extends Component {
         }
     }
 
-    cb(data) {
+    async cb(data) {
         let url         = '';
-        let errorMsg    = 'Errur inconue';
 
         if (this.state.formWanted === 'login'){
             url         = 'http://localhost:3001/auth/login';
-            errorMsg    = 'Aucun compte trouvé';
         } else {
             url         = 'http://localhost:3001/auth/register';
-            errorMsg    = 'L\'email est déjà utlisé';
         }
-
-        fetch(url, {method: 'POST', headers:{ 'content-type': 'application/json' }, body: JSON.stringify(data) })
+        return await fetch(url, {method: 'POST', headers:{ 'content-type': 'application/json' }, body: JSON.stringify(data) })
             .then(res => {
                 if (res.ok) {
-                    res.json()
-                        .then(json => {
-                            this.state.formWanted === 'login' ? this.props.successLogin(json) : this.setState({formWanted: 'register'})
-                        })
+                    if (this.state.formWanted === 'login') {
+                        this.props.successLogin(res);
+                    } else { this.setState({formWanted: 'register'}) }
+                    return true;
                 } else {
-                    console.log(errorMsg);
+                    res.json()
+                        .then(json => console.log(json));
+                    return false;
                 }
             })
-
-        return true;
     }
 
     changeForm() {
