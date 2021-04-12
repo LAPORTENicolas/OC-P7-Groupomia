@@ -18,12 +18,11 @@ const Input = (props) => {
                 regExp.test(e.target.value) ? className[1] = 'success' : className[1] = 'error'
             break;
         }
-        console.log(value);
     }
 
     switch (props.type) {
         case 'textarea':
-            input = <textarea className={className.join(' ')} name={props.name} id={props.id} onChange={onChange} >{value}</textarea>;
+            input = <textarea className={className.join(' ')} name={props.name} id={props.id} onChange={onChange}>{value}</textarea>;
             break;
 
         case 'file':

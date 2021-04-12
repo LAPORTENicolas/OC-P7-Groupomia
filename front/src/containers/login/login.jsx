@@ -80,7 +80,7 @@ class Login extends Component {
                 if (res.ok) {
                     if (this.state.formWanted === 'login') {
                         this.props.successLogin(res);
-                    } else { this.setState({formWanted: 'register'}) }
+                    }
                     return true;
                 } else {
                     res.json()

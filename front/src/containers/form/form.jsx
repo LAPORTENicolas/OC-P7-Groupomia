@@ -38,7 +38,6 @@ class Form extends Component {
                 const   fr    = new FileReader();
                 fr.readAsText(file.files[0]);
                 fr.onload = _ => sessionStorage.setItem('file', fr.result);
-                console.log(sessionStorage.getItem('file'));
             } else {
                 if (regExp.test(document.getElementById(value.name).value)){
                     data[value.name] = (document.getElementById(value.name).value)

@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
 
 class Header extends Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         return <header className="navbar navbar-expand-lg navbar-light bg-light ">
@@ -28,12 +25,11 @@ class Header extends Component {
                                 Mon compte
                             </p>
                             <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><p className="dropdown-item">Editer mes infomations</p></li>
+                                <li><p className="dropdown-item" onClick={_ => this.props.changePage('userEdition')}>Editer mes infomations</p></li>
                                 <li>
                                     <hr className="dropdown-divider" />
                                 </li>
                                 <li><p className="dropdown-item" onClick={this.props.logout}>Déconnexion</p></li>
-                                <li><p className="dropdown-item red">Supprimer mon compte</p></li>
                             </ul>
                         </li>
                     </ul>

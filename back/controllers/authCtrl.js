@@ -57,29 +57,27 @@ exports.register    = (req, res) => {
 }
 
 exports.delete      = (req, res) => {
-    console.log('lol');
-    const email     = req.body.email;
-    const password  = req.body.password;
+    const id        = req.body.userId;
 
     connection()
         .then(con => {
-            con.query('SELECT * FROM user WHERE email = ?', [email])
-                .then(rows => {
-                    if (rows['0'] === undefined) {
-                        res.status(400).json({error: 'Aucun utilisateur trouvé'});
-                    } else {
-                        bcrypt.compare(password, rows['0'].password)
-                            .then(verif => {
-                                if (verif){
-                                    con.query('DELETE FROM user WHERE email = ?', [email])
-                                        .then(_ => res.status(200).json({message: 'Compte supprimé'}))
-                                        .catch(err => res.status(400).json({err}));
-                                } else {
-                                    res.status(400).json({error: 'Mot de passe incorrect'})
-                                }
-                            })
-                            .catch(err => res.status(500).json({err}))
-                    }
+            con.query('DELETE FROM user WHERE id = ?', [id])
+                .then(_ => res.status(200).json({message: 'Compte supprimé'}))
+                .catch(err => res.status(400).json({err}))
+        })
+}
+
+exports.edit        = (req, res) => {
+    const data = req.body;
+    console.log(data);
+
+    bcrypt.hash(data.password, 10)
+        .then(hash => {
+            connection()
+                .then(con => {
+                    con.query('UPDATE user SET username = ?, email = ?, password = ? WHERE id = ?', [data.username, data.email, hash, data.userId])
+                        .then(data => res.status(200).json(data))
+                        .catch(err => res.status(400).json({err}));
                 })
         })
 }

@@ -33,7 +33,7 @@ class User extends Component{
     return {'authorization': 'Baerer ' + this.state.token, 'content-type': 'application/json'};
   }
 
-   login(res) {
+  login(res) {
     res.json()
         .then(data => {
           localStorage.setItem('user', JSON.stringify(data));
@@ -46,8 +46,23 @@ class User extends Component{
     this.setState({userId: '', username: '', token: '', logged: false});
   }
 
+  deleteAccount() {
+    const header  = this.getHeader();
+    const data    = { userId: this.state.userId}
+
+    fetch('http://localhost:3001/auth/delete', {method: 'POST', headers: header, body: JSON.stringify(data)})
+        .then(res => {
+          if (res.ok){
+            localStorage.removeItem('user');
+            this.setState({logged: false});
+          } else {
+            return false;
+          }
+        })
+  }
+
   render() {
-    return this.state.logged ?  <App getHeader={this.getHeader.bind(this)} username={this.state.username} userId={this.state.userId} logout={this.logout.bind(this)} /> : <Login successLogin={this.login.bind(this)}/>
+    return this.state.logged ?  <App token={this.state.token} deleteAccount={this.deleteAccount.bind(this)} getHeader={this.getHeader.bind(this)} username={this.state.username} userId={this.state.userId} logout={this.logout.bind(this)} /> : <Login successLogin={this.login.bind(this)}/>
   }
 
 }

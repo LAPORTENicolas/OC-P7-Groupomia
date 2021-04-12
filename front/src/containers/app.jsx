@@ -3,13 +3,17 @@ import Header               from './header/header'
 import Filtre               from './filtre/filtre'
 import FindBar              from './module/findBar';
 import Create               from './create/create';
+import userEdition          from './userEdition/userEdition';
+import UserEdition from "./userEdition/userEdition";
 
 class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            page: 'create',
-            user: props.user,
+            page: 'userEdition',
+            user: props.username,
+            userId: props.userId,
+            token: props.token
         }
     }
 
@@ -25,7 +29,11 @@ class App extends Component {
                 break
 
             case "create":
-                page = <> <Create/> </>
+                page = <> <Create getHeader={this.props.getHeader} userId={this.props.userId}/> </>
+                break;
+
+            case 'userEdition':
+                page = <> <UserEdition deleteAccount={this.props.deleteAccount} getHeader={this.props.getHeader} username={this.props.username} userId={this.props.userId} token={this.props.token} /> </>
                 break;
 
             default:

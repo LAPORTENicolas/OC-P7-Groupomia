@@ -8,7 +8,6 @@ module.exports  = (req, res, next) => {
         if (req.body.userId && req.body.userId !== userId) {
             throw 'Token invalide';
         } else {
-            console.log('c bon');
             next();
         }
     } catch {

@@ -12,6 +12,37 @@ $gray: #adb5bd
 body, html
   height: 100%
 
+
+.error
+  border: 2px $red
+  box-shadow: 0 0 0 .25rem $red !important
+.success
+  box-shadow: 0 0 0 .25rem $green !important
+.red
+  color: $red
+  font-weight: bold
+  &:hover
+    cursor: pointer
+
+.important-alert
+  position: absolute
+  top: 0
+  left: 0
+  height: 100%
+  width: 100%
+  background-color: rgba($blue, 0.7)
+  z-index: 10
+  color: white
+  font-weight: bold
+  p
+    background-color: $blue
+    padding: 1rem 0
+    text-align: center
+    font-size: 1.5em
+  div
+    display: flex
+    justify-content: space-around
+
 .form-control
   &:focus
     box-shadow: none
@@ -36,11 +67,6 @@ body, html
     display: flex
     justify-content: center
     padding-top: 1rem
-  .error
-    border: 2px $red
-    box-shadow: 0 0 0 .25rem $red !important
-  .sucess
-    box-shadow: 0 0 0 .25rem $green !important
 
 .container
   &-flex-center
