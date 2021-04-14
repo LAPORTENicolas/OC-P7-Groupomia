@@ -67,13 +67,15 @@ class Login extends Component {
         }
     }
 
-    async cb(data) {
-        let url         = '';
-
+    async cb(arrayData) {
+        let url;
+        let data;
         if (this.state.formWanted === 'login'){
             url         = 'http://localhost:3001/auth/login';
+            data        = {email: arrayData.email, password: arrayData.password};
         } else {
             url         = 'http://localhost:3001/auth/register';
+            data        = {email: arrayData.email, password: arrayData.password, username: arrayData.username};
         }
         return await fetch(url, {method: 'POST', headers:{ 'content-type': 'application/json' }, body: JSON.stringify(data) })
             .then(res => {

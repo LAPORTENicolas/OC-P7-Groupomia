@@ -10,6 +10,7 @@ class User extends Component{
     super(props);
     this.state = {
       logged: false,
+      email: '',
       username: '',
       token: '',
       userId: '',
@@ -24,6 +25,7 @@ class User extends Component{
         logged: true,
         username: user.username,
         token: user.token,
+        email: user.email,
         userId: user.userId,
       });
     }
@@ -37,7 +39,7 @@ class User extends Component{
     res.json()
         .then(data => {
           localStorage.setItem('user', JSON.stringify(data));
-          this.setState({logged: true, username: data.username, token: data.token, userId: data.userId});
+          this.setState({logged: true, username: data.username, token: data.token, userId: data.userId, email: data.email});
         })
   }
 
@@ -62,7 +64,7 @@ class User extends Component{
   }
 
   render() {
-    return this.state.logged ?  <App token={this.state.token} deleteAccount={this.deleteAccount.bind(this)} getHeader={this.getHeader.bind(this)} username={this.state.username} userId={this.state.userId} logout={this.logout.bind(this)} /> : <Login successLogin={this.login.bind(this)}/>
+    return this.state.logged ?  <App token={this.state.token} deleteAccount={this.deleteAccount.bind(this)} getHeader={this.getHeader.bind(this)} username={this.state.username} userId={this.state.userId} logout={this.logout.bind(this)} email={this.state.email} /> : <Login successLogin={this.login.bind(this)}/>
   }
 
 }

@@ -18,6 +18,7 @@ exports.login       = (req, res) => {
                             .then(verif => verif ? res.status(200).json({
                                 userId: rows['0'].id,
                                 username: rows['0'].username,
+                                email: rows['0'].email,
                                 token: jwt.sign(
                                     { userId: rows['0'].id },
                                 'RANDOM_TOKEN_SECRET',

@@ -4,7 +4,6 @@ import Form                 from '../form/form'
 class Create extends Component {
     constructor(props) {
         super(props);
-        console.log(props);
         this.state = {
             form: {
                 publi: {
@@ -34,16 +33,21 @@ class Create extends Component {
         }
     }
 
-     cb(data) {
-        const header    = this.props.getHeader();
+     async cb(arrayData) {
+        console.log(arrayData);
+        /*
+        console.log(arrayData);
         const sendData  = {
             userId: this.props.userId,
-            publication: {data}
+            username: this.props.username,
+            ...arrayData
         };
-        return fetch(this.state.form.publi.url, {method: 'POST', headers: header, body: JSON.stringify(sendData)})
+
+        return fetch(this.state.form.publi.url, {method: 'POST', headers: {'content-type': 'multipart/from-data', 'authorization': this.props.token}, body: JSON.stringify(sendData)})
             .then( res => {
                 return res.ok;
             })
+         */
     }
 
     render() {

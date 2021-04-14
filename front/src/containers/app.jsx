@@ -3,15 +3,15 @@ import Header               from './header/header'
 import Filtre               from './filtre/filtre'
 import FindBar              from './module/findBar';
 import Create               from './create/create';
-import userEdition          from './userEdition/userEdition';
-import UserEdition from "./userEdition/userEdition";
+import UserEdition          from './userEdition/userEdition';
+import Feed                 from './feed/feed';
 
 class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            page: 'userEdition',
-            user: props.username,
+            page: 'homepage',
+            username: props.username,
             userId: props.userId,
             token: props.token
         }
@@ -25,15 +25,15 @@ class App extends Component {
         let page;
         switch (this.state.page) {
             case "homepage":
-                page = <> <Filtre/> <FindBar/> </>
+                page = <> <Filtre/> <FindBar/> <Feed getHeader={this.props.getHeader}/> </>
                 break
 
             case "create":
-                page = <> <Create getHeader={this.props.getHeader} userId={this.props.userId}/> </>
+                page = <> <Create token={this.props.token} getHeader={this.props.getHeader} username={this.props.username} userId={this.props.userId}/> </>
                 break;
 
             case 'userEdition':
-                page = <> <UserEdition deleteAccount={this.props.deleteAccount} getHeader={this.props.getHeader} username={this.props.username} userId={this.props.userId} token={this.props.token} /> </>
+                page = <> <UserEdition deleteAccount={this.props.deleteAccount} getHeader={this.props.getHeader} username={this.props.username} userId={this.props.userId} email={this.props.email} token={this.props.token} /> </>
                 break;
 
             default:

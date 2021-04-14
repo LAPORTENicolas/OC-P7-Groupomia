@@ -3,7 +3,6 @@ const multer        = require('multer');
 const MULTER_TYPE   = {
     'images/jpg': '.jpg',
     'images/jpeg': '.jpg',
-    'images/jpg': '.jpg',
     'images/gif': '.gif',
 }
 
