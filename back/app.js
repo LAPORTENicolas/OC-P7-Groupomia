@@ -1,10 +1,11 @@
-const express       = require('express');
-const helmet        = require('helmet');
-const bodyParser    = require('body-parser');
-const path          = require('path');
-const routeAuth     = require('./routes/authRoute');
-const routePubli    = require('./routes/publiRoute');
-const app           = express();
+const express           = require('express');
+const helmet            = require('helmet');
+const bodyParser        = require('body-parser');
+const path              = require('path');
+const routeAuth         = require('./routes/authRoute');
+const routePubli        = require('./routes/publiRoute');
+const routeCommentary   = require('./routes/commentaryRoute');
+const app               = express();
 
 app.use(express.json());
 app.use(helmet());
@@ -20,6 +21,7 @@ app.use((req, res, next) => {
 
 app.use('/upload', express.static(path.join(__dirname, 'upload')));
 app.use('/publication', routePubli);
+app.use('/commentary', routeCommentary);
 app.use('/auth', routeAuth);
 
 module.exports      = app;

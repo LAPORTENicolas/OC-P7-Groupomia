@@ -7,8 +7,8 @@ exports.new             = (req, res) => {
     const onlyText      = req.body.onlyText;
     const description   = req.body.description;
     const filePath      = onlyText === '0' ? `${req.protocol}://${req.get('host')}/upload/${req.file.filename}` : null
-    const comantary     = {};
-    const query         = "INSERT INTO publication SET idUser = ?, usernameUser = ?, description = ?, onlyText = ?, date_post = NOW(), filePath = ?, comantary = ?";
+    const comantary     = JSON.stringify({});
+    const query         = "INSERT INTO publication SET idUser = ?, usernameUser = ?, description = ?, onlyText = ?, date_post = NOW(), filePath = ?, commantary = ?";
     const data          = [id, username, description, onlyText, filePath, comantary];
 
     connexion()
@@ -78,6 +78,21 @@ exports.getAll          = (req, res) => {
             con.query(query)
                 .then(rows => res.status(200).json(rows))
                 .catch(err => res.status(400).json({error: err.code}))
+        })
+}
+
+exports.getAllFrom      = (req, res) => {
+    const find          = '%' + req.body.find + '%';
+    const query         = "SELECT * FROM publication WHERE usernameUser LIKE ?";
+
+    connexion()
+        .then(con => {
+            con.query(query, find)
+                .then(rows => {
+                    console.log(rows[0]);
+                        res.status(200).json(rows)
+                })
+                .catch(err => res.status(400).json({error: err.msg}))
         })
 }
 

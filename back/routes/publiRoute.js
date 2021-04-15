@@ -9,6 +9,7 @@ router.delete('/delete', auth, ctrlPubli.delete);
 router.put('/edit', auth, multer, ctrlPubli.edit);
 router.get('/getAll/:id', auth, ctrlPubli.getAllPubli);
 router.get('/getAll', auth, ctrlPubli.getAll);
+router.post('/getAllFrom', auth, ctrlPubli.getAllFrom);
 router.get('/getOne/:id', auth, ctrlPubli.getOnePubli);
 
 module.exports  = router;

@@ -3,12 +3,13 @@ import CreatePublication    from './createPublication';
 import Header               from '../header/header';
 import ListPublication from "./listPublication";
 import Homepage from "./homepage";
+import Find from "../find/find";
 
 class App extends Component {
     constructor(props) {
         super(props);
         this.state ={
-            page: 'homepage',
+            page: 'find',
             id: props.id,
             username: props.username,
             email: props.email,
@@ -24,12 +25,16 @@ class App extends Component {
         let page = '';
 
         switch (this.state.page){
-            case 'createPublication':
-                page = <CreatePublication id={this.props.id} username={this.props.username} email={this.props.email} token={this.props.token} />
-                break;
-
             case 'homepage':
                 page = <Homepage id={this.props.id} username={this.props.username} email={this.props.email} token={this.props.token}/>
+                break;
+
+            case 'find':
+                page = <Find id={this.props.id} username={this.props.username} email={this.props.email} token={this.props.token}/>
+                break;
+
+            case 'createPublication':
+                page = <CreatePublication id={this.props.id} username={this.props.username} email={this.props.email} token={this.props.token} />
                 break;
 
             case 'listPublications':
