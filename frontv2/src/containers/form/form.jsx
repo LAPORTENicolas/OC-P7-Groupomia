@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Input from "../../../component/input/input";
-import Button from "../../../component/input/button";
-import Alert from "../../../component/alert/alert";
+import Input from "../../component/input/input";
+import Button from "../../component/input/button";
+import Alert from "../../component/alert/alert";
 
 class Form extends Component {
     constructor(props) {
@@ -11,6 +11,8 @@ class Form extends Component {
             loading: false,
             error: false,
             errorText: '',
+            success: false,
+            successMsg: ''
         }
     }
 
@@ -24,17 +26,39 @@ class Form extends Component {
     // Permet de vérifier le formulaire
     checkForm() {
         this.setState({loading: true, error: false})
-        let err = 0;
-        let data = {};
+
+        const   type    = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif', 'image/svg+xml', 'image/webp']
+        let     err     = 0;
+        let     data    = {};
 
         // Fait une boucle de tout les champs du formulaire
         this.state.form.form.map(val => {
             // Recupere le contenue du champ + ça regExp
-            const inputVal  = document.getElementById(val.name).value
+            const input     = document.getElementById(val.name);
+            const inputVal  = val.type === 'file' ? input.files[0] : input.value;
             const regExp    = new RegExp(val.regExp);
 
+            if (inputVal === ''){
+                err++;
+                return 0;
+            }
+
             // Vérifie si le champs est valide, si champ invalide ajout 1 a err sinon ajoute la valeur du champs
-            if (regExp.test(inputVal)){
+            if (regExp.test(inputVal) || input.type === 'file'){
+                // Vérifie si mType est égal au type du fichier
+                const check     = mType => mType === inputVal.type;
+
+                if (input.type === 'file') {
+                    // Vérifie si le type du fichier envoyé est valide
+                    if(inputVal === undefined){
+                        data['file'] = undefined;
+                    } else if (type.some(check) === false) {
+                        err++;
+                        return 0;
+                    }
+                }
+
+                // Ajoute la valeur dans le JSON data;
                 data[val.name] = inputVal;
             } else { err++; }
         })
@@ -43,12 +67,13 @@ class Form extends Component {
         if (err > 0) {
             this.setState({errorMsg: 'Le formulaire est invalide', error: true})
         } else {
+
             // Execute le callback
             this.props.successCallBack(data)
                 .then(res => {
                     // Si tout c'est bien passé
                   if (res === true){
-                      console.log('bon')
+                      this.setState({loading: false, success: true, successMsg: 'Publication publié'})
                   }else {
                       // Si il y a une erreur affiche l'erreur
                       res.json()
@@ -67,6 +92,8 @@ class Form extends Component {
 
         return <div className={'container'}>
             {this.state.error ? <Alert type={'danger'}>{this.state.errorMsg}</Alert> : null}
+            {this.state.success ? <Alert type={'success'}>{this.state.successMsg}</Alert> : null}
+            <h2>{this.state.form.title}</h2>
             {form}
             <Button validationForm={this.checkForm.bind(this)}>Valider le formulaire</Button>
             {this.props.children === undefined ? null : this.props.children }

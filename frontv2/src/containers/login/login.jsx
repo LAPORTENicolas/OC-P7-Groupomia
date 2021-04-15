@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Form                 from './form/form';
+import Form                 from '../form/form';
 
 class Login extends Component {
     constructor(props) {
@@ -74,11 +74,11 @@ class Login extends Component {
     }
 
     async successCB(data){
-        // Initilidation des vars
+        // Initialisation des vars
         let     url         = '';
         const   headers   = {'content-type': 'application/json'};
 
-        console.log(data);
+        // Choisi le bon url
         if (this.state.formWanted === 'login'){
             url = 'http://localhost:3001/auth/login';
         } else {

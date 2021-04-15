@@ -24,13 +24,12 @@ exports.login       = (req, res) => {
                                 'RANDOM_TOKEN_SECRET',
                                 { expiresIn: '24h' }
                                 )}) : res.status(400).json({error: 'L\'adresse email ou le mot passe n\'est pas correct'}))
-                            .catch(err => res.status(500).json({err}))
+                            .catch(_ => res.status(500).json({error: 'Une erreur est survene'}))
                     }
                     con.end();
                 })
                 .catch(err => {
-                    console.log(err);
-                    res.status(400).json({err})
+                    res.status(400).json({error: 'Une erreur est survenie'})
                 })
         })
 }
@@ -48,12 +47,12 @@ exports.register    = (req, res) => {
                         .then(hash => {
                             con.query('INSERT INTO user SET username = ?, email = ?, password = ?, date_register = NOW()', [username, email, hash])
                                 .then(data => res.status(200).json(data))
-                                .catch(err => res.status(400).json({err}));
+                                .catch(err => res.status(400).json({error: err.code}));
                             //res.status(201).json({message: 'Utilisateur créer'})
                         })
-                        .catch(err => res.status(500).json({err}))
+                        .catch(err => res.status(500).json({error: err.code}))
                 })
-                .catch(err => res.status(401).json({err}));
+                .catch(err => res.status(401).json({error: err.code}));
         })
 }
 
