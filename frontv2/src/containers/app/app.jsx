@@ -4,6 +4,7 @@ import Header               from '../header/header';
 import ListPublication      from "./listPublication";
 import Homepage             from "./homepage";
 import Find                 from "../find/find";
+import AccountEdit from "./account/accountEdit";
 
 class App extends Component {
     constructor(props) {
@@ -11,6 +12,7 @@ class App extends Component {
         this.state ={
             page: 'homepage',
             id: props.id,
+            rank: props.rank,
             username: props.username,
             email: props.email,
             token: props.token,
@@ -41,6 +43,10 @@ class App extends Component {
                 page = <ListPublication userId={this.props.id} username={this.props.username} email={this.props.email} token={this.props.token}/>
                 break;
 
+            case 'editAccount':
+                page = <AccountEdit id={this.props.id} username={this.props.username} email={this.props.email} token={this.props.token} />
+                break;
+
             case 'logout':
                 this.props.logout();
                 break;
@@ -50,7 +56,7 @@ class App extends Component {
         }
 
         return <div>
-            <Header changePage={this.handleChangePage.bind(this)} active={this.state.page}/>
+            <Header changePage={this.handleChangePage.bind(this)} rank={this.state.rank} active={this.state.page}/>
             {page}
         </div>
     }

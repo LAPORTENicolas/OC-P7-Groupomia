@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 class Header extends Component {
 
     render() {
+        console.log(this.props.rank)
         return <header className="navbar navbar-expand-lg navbar-light bg-light ">
             <div className="container-fluid flex-space">
                 <p className="navbar-brand"><img src="img/icon-left-font-monochrome-black.svg" alt="logo" height="30px"/></p>
@@ -25,6 +26,11 @@ class Header extends Component {
                         <li className="nav-item" onClick={_ => this.props.changePage('find')}>
                             <p className={this.props.active === 'find' ? "nav-link active" : "nav-link" } aria-current="page">Rechercher</p>
                         </li>
+                        {this.props.rank === 1 ?
+                            <li className="nav-item" onClick={_ => this.props.changePage('adminPage')}>
+                                <p className={this.props.active === 'adminPage' ? "nav-link active" : "nav-link" } aria-current="page">Administration</p>
+                            </li>
+                            : null}
                         <li className="nav-item">
                             <p className={this.props.active === 'userEdition' ? "nav-link dropdown-toggle active" : "nav-link dropdown-toggle" } id="navbarDropdown" role="button"
                                data-bs-toggle="dropdown" aria-expanded="false">

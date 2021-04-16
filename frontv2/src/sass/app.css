@@ -28,6 +28,14 @@
   padding: 1rem;
 }
 
+.success {
+  border: 2px solid green;
+}
+
+.error {
+  border: 2px solid red;
+}
+
 img {
   max-width: 100%;
   max-height: 400px;

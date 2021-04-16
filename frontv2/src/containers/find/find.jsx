@@ -98,7 +98,9 @@ class Find extends Component {
             publication = this.state.publication.map((val, key) => {
                 const date      = new Date(val.date_post).toLocaleDateString();
                 return <div className="card center border-0 col-10 mt-3" key={key}>
-                    {val.filePath ? <img src={val.filePath} className="card-img-top" alt="Image"/> : null}
+                    {val.filePath ? val.filePath.indexOf('.mp4') !== -1 ?
+                        <video src={val.filePath} controls>Vidéo non supporte</video> :
+                        <img src={val.filePath} className="card-img-top" alt="Image"/> : null}
                     <div className="card-body bg-light shadow-sm">
                         <p className="card-text">{val.description}</p>
                         { val.commantary === '{}' ? null : <Com com={JSON.parse(val.commantary)}/> }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Input from "../../component/input/input";
 import Button from "../../component/input/button";
 import Alert from "../../component/alert/alert";
+import Loader from "../../component/loader/loader";
 
 class Form extends Component {
     constructor(props) {
@@ -27,7 +28,7 @@ class Form extends Component {
     checkForm() {
         this.setState({loading: true})
 
-        const   type    = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif', 'image/svg+xml', 'image/webp', 'video/mp4']
+        const   type    = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif', 'image/svg+xml', 'image/webp', 'video/mp4', 'video/webm']
         let     err     = 0;
         let     data    = {};
 
@@ -56,6 +57,11 @@ class Form extends Component {
                         err++;
                         return 0;
                     }
+                } else {
+                    if (inputVal.length > 30){
+                        err++;
+                        return 0;
+                    }
                 }
 
                 // Ajoute la valeur dans le JSON data;
@@ -67,13 +73,12 @@ class Form extends Component {
         if (err > 0) {
             this.setState({errorMsg: 'Le formulaire est invalide', error: true})
         } else {
-
             // Execute le callback
             this.props.successCallBack(data)
                 .then(res => {
                     // Si tout c'est bien passé
                   if (res === true){
-                      this.setState({loading: false, success: true, successMsg: 'Publication publié'})
+                      this.setState({loading: false, success: true, successMsg: this.state.form.successMessage})
                   }else {
                       // Si il y a une erreur affiche l'erreur
                       res.json()
@@ -88,15 +93,15 @@ class Form extends Component {
     render() {
         console.log('render');
         const form = this.state.form.form.map((val, key) => {
-            return <Input className={val.className} value={val.value} type={val.type} name={val.name} id={val.name} placeholder={val.placeholder} key={key}/>
+            return <Input regExp={val.regExp} className={val.className} value={val.value} type={val.type} name={val.name} id={val.name} placeholder={val.placeholder} key={key}/>
         })
 
         return <div className={'container'}>
             {this.state.error ? <Alert type={'danger'}>{this.state.errorMsg}</Alert> : null}
             {this.state.success ? <Alert type={'success'}>{this.state.successMsg}</Alert> : null}
-            <h2>{this.state.form.title}</h2>
-            {form}
-            <Button validationForm={this.checkForm.bind(this)}>Valider le formulaire</Button>
+                <h2>{this.state.form.title}</h2>
+            {this.state.loading ? <Loader/> : form}
+                <Button validationForm={this.checkForm.bind(this)}>Valider le formulaire</Button>
             {this.props.children === undefined ? null : this.props.children }
         </div>
     }

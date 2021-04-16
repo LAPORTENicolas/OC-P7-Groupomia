@@ -29,7 +29,7 @@ exports.login       = (req, res) => {
                     con.end();
                 })
                 .catch(err => {
-                    res.status(400).json({error: 'Une erreur est survenie'})
+                    res.status(400).json({error: 'Une erreur est survenue'})
                 })
         })
 }
@@ -68,14 +68,18 @@ exports.delete      = (req, res) => {
 }
 
 exports.edit        = (req, res) => {
-    const data = req.body;
-    console.log(data);
 
-    bcrypt.hash(data.password, 10)
+    const username  = req.body.username;
+    const email     = req.body.email;
+    const password  = req.body.password;
+    const id        = req.body.id;
+
+    bcrypt.hash(password, 10)
         .then(hash => {
+            const data = [username, email, hash, id];
             connection()
                 .then(con => {
-                    con.query('UPDATE user SET username = ?, email = ?, password = ? WHERE id = ?', [data.username, data.email, hash, data.userId])
+                    con.query('UPDATE user SET username = ?, email = ?, password = ? WHERE id = ?', data)
                         .then(data => res.status(200).json(data))
                         .catch(err => res.status(400).json({err}));
                 })

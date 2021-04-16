@@ -11,8 +11,10 @@ class Publication extends Component {
             loading: true,
             error: false,
             errorMsg: '',
+            type: '',
             userId: props.userId,
             token: props.token,
+            searchIndice: 1,
             form: {
                 com: {
                     name: 'com',
@@ -33,6 +35,18 @@ class Publication extends Component {
         }
     }
 
+    handleClick(){
+        const state = this.state.searchIndice;
+        this.setState({searchIndice: state+1})
+    }
+
+    handleChange(val) {
+        this.setState({type: val});
+
+        //this.render();
+    }
+
+
     componentDidMount() {
         const url       = 'http://91.162.231.131:3001/publication/getAll';
         const headers   = {'authorization': 'Baerer ' + this.state.token}
@@ -42,7 +56,6 @@ class Publication extends Component {
                 if (res.ok){
                     res.json()
                         .then(json => {
-                            console.log(json);
                             this.setState({loading: false, publication: json})
                         })
                 } else {
@@ -102,28 +115,57 @@ class Publication extends Component {
     }
 
     render() {
+        console.log('render');
+        // Initilisation des var
         let publication;
+        let actualTime  = new Date();
+        let dateSearch  = Date.parse(actualTime) - (this.state.searchIndice * 259200000);
 
         if (this.state.loading === false && this.state.error === false) {
             publication = this.state.publication.map((val, key) => {
-                console.log(val);
-                const date      = new Date(val.date_post).toLocaleDateString();
-                return <div className="card center border-0 col-10 mt-3" key={key}>
-                    {val.filePath ? val.filePath.indexOf('.mp4') ? <video src={val.filePath} controls autoPlay>Vidéo non supporte</video> : <img src={val.filePath} className="card-img-top" alt="Image"/> : null}
-                    <div className="card-body bg-light shadow-sm">
-                        <p className="card-text">{val.description}</p>
-                        { val.commantary === '{}' ? null : <Com com={JSON.parse(val.commantary)}/> }
-                        <div>
-                            <Input className={['form-control']} value={''} name={this.state.form.com.name} id={this.state.form.com.name+key} type={'text'} placeholder={'Commentaire'}/>
-                            <Button validationForm={this.sendCommentary.bind(this, val.id, key)} >Envoyer</Button>
+
+                if (Date.parse(val.date_post) > dateSearch) {
+                    const date = new Date(val.date_post).toLocaleDateString();
+                    console.log(this.state.type, val.onlyText)
+                    if (this.state.type !== '') {
+                        if (this.state.type !== val.onlyText) {
+                            return '';
+                        }
+                    }
+
+                    return <div className="card center border-0 col-10 mt-3" key={key}>
+                        {val.filePath ? val.filePath.indexOf('.mp4') !== -1 ?
+                            <video src={val.filePath} controls>Vidéo non supporte</video> :
+                            <img src={val.filePath} className="card-img-top" alt="Image"/> : null}
+                        <div className="card-body bg-light shadow-sm">
+                            <p className="card-text">{val.description}</p>
+                            {val.commantary === '{}' ? null : <Com com={JSON.parse(val.commantary)}/>}
+                            <div>
+                                <Input className={['form-control']} value={''} name={this.state.form.com.name}
+                                       id={this.state.form.com.name + key} type={'text'} placeholder={'Commentaire'}/>
+                                <Button validationForm={this.sendCommentary.bind(this, val.id, key)}>Envoyer</Button>
+                            </div>
+                            <p>Poster par {val.usernameUser} le {date}</p>
                         </div>
-                        <p>Poster par {val.usernameUser} le {date}</p>
                     </div>
-                </div>
+                }
             })
         }
+
         return <div className={'container container-flex-col-center'}>
-            {this.state.loading ? <Loader/> : publication }
+
+            {this.state.loading ? <Loader/> : <>  <div>
+
+                <div>
+                    <label>Unique textuelle</label>
+                    <input type={'radio'} name={'typePublication'} value={'onlyText'} onChange={_ => this.handleChange(1)} />
+                </div>
+                <div>
+                    <label>Unique Media</label>
+                    <input type={'radio'} name={'typePublication'} onChange={_ => this.handleChange(0)}/>
+                </div>
+
+            </div>   {publication} <button onClick={this.handleClick.bind(this)} className={'btn btn-primary'}>Plus de contenue</button></>}
         </div>
     }
 }

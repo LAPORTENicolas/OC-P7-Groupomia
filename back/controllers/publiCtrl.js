@@ -57,7 +57,7 @@ exports.delete          = (req, res) => {
 exports.getAllPubli     = (req, res) => {
     connexion()
         .then(con => {
-            con.query("SELECT * FROM publication WHERE idUser = ?", [req.params.id])
+            con.query("SELECT * FROM publication WHERE idUser = ? ORDER BY date_post DESC", [req.params.id])
                 .then (rows => {
                     if (rows.length === 0) {
                         res.status(400).json({error: 'Vous n\'avez encore rien publié'})
@@ -71,7 +71,7 @@ exports.getAllPubli     = (req, res) => {
 }
 
 exports.getAll          = (req, res) => {
-    const query         = "SELECT * FROM publication";
+    const query         = "SELECT * FROM publication ORDER BY date_post DESC";
 
     connexion()
         .then(con => {
@@ -83,7 +83,7 @@ exports.getAll          = (req, res) => {
 
 exports.getAllFrom      = (req, res) => {
     const find          = '%' + req.body.find + '%';
-    const query         = "SELECT * FROM publication WHERE usernameUser LIKE ?";
+    const query         = "SELECT * FROM publication WHERE usernameUser LIKE ? ORDER BY date_post DESC";
 
     connexion()
         .then(con => {

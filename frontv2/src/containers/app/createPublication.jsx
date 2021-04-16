@@ -14,6 +14,7 @@ class CreatePublication extends Component {
                     name: 'publication',
                     title: 'Créer une publication',
                     url: 'http://91.162.231.131:3001/publication/new',
+                    successMessage: 'Publication en ligne',
                     form: [
                         {
                             type: 'textarea',

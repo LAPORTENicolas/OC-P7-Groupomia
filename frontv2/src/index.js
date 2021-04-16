@@ -9,6 +9,7 @@ class User extends Component {
         super(props);
         this.state = {
             logged: false,
+            rank: 0,
             username: '',
             email: '',
             token: '',
@@ -19,7 +20,7 @@ class User extends Component {
     componentDidMount() {
         if (localStorage.getItem('user')){
             const user = JSON.parse(localStorage.getItem('user'));
-            this.setState({id: user.userId, username: user.username, email: user.email, token: user.token, logged: true});
+            this.setState({id: user.userId, username: user.username, email: user.email, token: user.token, logged: true, rank: 1});
         }
     }
 
@@ -27,18 +28,18 @@ class User extends Component {
         if (localStorage.getItem('user')){
             localStorage.removeItem('user');
         }
-        this.setState({logged: false, username: '', email: '', token: ''})
+        this.setState({logged: false, username: '', email: '', token: '', rank: 0})
     }
 
     handleLogin(data){
         console.log(data);
         localStorage.setItem('user', JSON.stringify(data));
-        this.setState({id: data.userId, username: data.username, email: data.email, token: data.token, logged: true});
+        this.setState({id: data.userId, username: data.username, email: data.email, token: data.token, logged: true, rank: data.admin});
         console.log(this.state);
     }
 
     render() {
-        return this.state.logged ? <App logout={this.logout.bind(this)} username={this.state.username} email={this.state.email} id={this.state.id} token={this.state.token} /> : <Login login={this.handleLogin.bind(this)} />
+        return this.state.logged ? <App rank={this.state.rank} logout={this.logout.bind(this)} username={this.state.username} email={this.state.email} id={this.state.id} token={this.state.token} /> : <Login login={this.handleLogin.bind(this)} />
     }
 }
 

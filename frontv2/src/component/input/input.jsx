@@ -15,7 +15,8 @@ const Input = (props) => {
                 break;
 
             default:
-                regExp.test(e.target.value) ? className[1] = 'success' : className[1] = 'error'
+                regExp.test(e.target.value) ? className[1] = 'success' : className[1] = 'error';
+                e.target.value.length < 30 ? className[1] = 'success' : className[1] = 'error';
             break;
         }
     }
