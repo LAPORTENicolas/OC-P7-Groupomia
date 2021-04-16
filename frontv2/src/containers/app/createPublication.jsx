@@ -22,7 +22,7 @@ class CreatePublication extends Component {
                             value: 'd',
                             placeholder: 'Description',
                             className: ['form-control big-input'],
-                            regExp: '^([a-zA-Z0-9&éèà -_ç()!$£^¨]+)$'
+                            regExp: '^([a-zA-Z0-9&éèà :/.?=https://twitter.com/tds/status/1383015549999968256?s=20]+)$'
                         },
                         {
                             type: 'file',

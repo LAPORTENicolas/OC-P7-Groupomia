@@ -6,7 +6,9 @@ const router    = express.Router();
 
 router.post('/new', auth, multer, ctrlPubli.new);
 router.delete('/delete', auth, ctrlPubli.delete);
+router.delete('/deleteAdmin', auth, ctrlPubli.deleteAdmin);
 router.put('/edit', auth, multer, ctrlPubli.edit);
+router.put('/editAdmin', auth, multer, ctrlPubli.edit);
 router.get('/getAll/:id', auth, ctrlPubli.getAllPubli);
 router.get('/getAll', auth, ctrlPubli.getAll);
 router.post('/getAllFrom', auth, ctrlPubli.getAllFrom);

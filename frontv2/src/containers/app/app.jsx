@@ -5,6 +5,7 @@ import ListPublication      from "./listPublication";
 import Homepage             from "./homepage";
 import Find                 from "../find/find";
 import AccountEdit from "./account/accountEdit";
+import AdminPage from "./adminPage";
 
 class App extends Component {
     constructor(props) {
@@ -45,6 +46,14 @@ class App extends Component {
 
             case 'editAccount':
                 page = <AccountEdit id={this.props.id} username={this.props.username} email={this.props.email} token={this.props.token} />
+                break;
+
+            case 'adminPage':
+                if (this.state.rank === 0) {
+                    this.setState({page: 'homepage'});
+                } else {
+                    page = <AdminPage userId={this.props.id} username={this.props.username} email={this.props.email} token={this.props.token} />
+                }
                 break;
 
             case 'logout':

@@ -42,8 +42,6 @@ class Publication extends Component {
 
     handleChange(val) {
         this.setState({type: val});
-
-        //this.render();
     }
 
 

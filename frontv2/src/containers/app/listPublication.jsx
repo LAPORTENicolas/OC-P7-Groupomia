@@ -26,6 +26,7 @@ class ListPublication extends Component {
                     name: 'publication',
                     title: 'Modifier une publication',
                     url: 'http://91.162.231.131:3001/publication/new',
+                    successMessage: 'Publication modifié',
                     form: [
                         {
                             type: 'textarea',
@@ -123,8 +124,10 @@ class ListPublication extends Component {
             publication = this.state.publication.map((val, key) => {
                 const date      = new Date(val.date_post).toLocaleDateString();
                 return <div className="card center border-0 col-10 mt-3" key={key}>
-                    {val.filePath ? val.filePath.indexOf('.mp4') ? <video src={val.filePath} controls>Vidéo non supporte</video> : <img src={val.filePath} className="card-img-top"/> : null}
-                    <div className="card-body bg-light shadow-sm">
+                    {val.filePath ? val.filePath.indexOf('.mp4') !== -1 ?
+                        <video src={val.filePath} controls>Vidéo non supporte</video> :
+                        <img src={val.filePath} className="card-img-top" alt="Image"/> : null}
+                        <div className="card-body bg-light shadow-sm">
                         <p className="card-text">{val.description}</p>
                         <p>Poster par {val.usernameUser} le {date}</p>
                         <p className="btn btn-primary" onClick={ _ => this.handleChange(key)}>Modifier</p>
@@ -137,8 +140,10 @@ class ListPublication extends Component {
         if (this.state.edit){
             const previousData = this.state.publication[this.state.keyPublication];
             publication = <div className={'container'}>
-                <h2>Image actuelle:
-                    {previousData.filePath === undefined ? null : <img src={previousData.filePath} alt={'image actuelle'}/>}
+                <h2>
+                    { previousData.filePath === undefined ? null : previousData.filePath ? previousData.filePath.indexOf('.mp4') !== -1 ?
+                            <>Vidéo actulle: <video src={previousData.filePath} controls>Vidéo non supporte</video></> :
+                            <>Image actuelle: <img src={previousData.filePath} className="card-img-top" alt="Image"/></> : null }
                 </h2>
                 <Form form={this.state.form.publi} successCallBack={this.successCB.bind(this)}/>
             </div>

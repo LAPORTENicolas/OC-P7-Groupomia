@@ -38,7 +38,9 @@ class Form extends Component {
             const input     = document.getElementById(val.name);
             const inputVal  = val.type === 'file' ? input.files[0] : input.value;
             const regExp    = new RegExp(val.regExp);
-
+            console.log(inputVal);
+            console.log(regExp);
+            console.log(regExp.test(inputVal));
             if (inputVal === ''){
                 err++;
                 return 0;

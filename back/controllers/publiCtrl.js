@@ -1,5 +1,4 @@
 const connexion         = require('../bdd');
-const getQuery          = require('../functions/functions');
 
 exports.new             = (req, res) => {
     const id            = req.body.id;
@@ -40,6 +39,33 @@ exports.edit            = (req, res) => {
         })
 }
 
+exports.editAdmin       = (req, res) => {
+    const id            = req.body.id;
+    const userId        = req.body.userId;
+    const description   = req.body.description;
+    const file          = req.file === undefined ? undefined : `${req.protocol}://${req.get('host')}/upload/${req.file.filename}`;
+    const onlyText      = req.file === undefined ? undefined : '0';
+    const query         = req.file === undefined ? 'UPDATE publication SET description = ? WHERE id = ?' : 'UPDATE publication SET description = ?, onlyText = \'0\', filePath = ? WHERE id = ?'
+    const data          = req.file === undefined ? [description, id] : [description, file, id]
+    console.log(data);
+    connexion()
+        .then(con => con.query('SELECT admin FROM user WHERE id = ?', [userId]).then(row => {
+            if (row[0].admin === 0) {
+                res.status(401).json({error: 'Manque de privileges'})
+            } else {
+                connexion()
+                    .then (con => {
+                        con.query(query, data)
+                            .then (_ => {
+                                console.log(_);
+                                res.status(200).json({message: 'Publication modifié'})
+                            })
+                            .catch (err => res.status(400).json({error: err.code}));
+                    })
+            }
+        }))
+}
+
 exports.delete          = (req, res) => {
     const id            = req.body.id;
     const userId        = req.body.userId;
@@ -52,6 +78,24 @@ exports.delete          = (req, res) => {
                 .then(_ => res.status(200).json({message: 'Publication supprimé'}))
                 .catch(err => res.status(400).json({error: err.code}))
         })
+}
+
+exports.deleteAdmin     = (req, res) => {
+    const id            = req.body.id;
+    const userId        = req.body.userId;
+    const query         = 'DELETE FROM publication WHERE id = ?';
+    const data          = [id];
+
+    connexion()
+        .then(con => con.query("SELECT admin FROM user WHERE id = ?", [userId]).then(row => {
+            row[0].admin === 0 ? res.status(401).json({error: 'Manque de priviléges'}) : null
+            connexion()
+                .then(con => {
+                    con.query(query, data)
+                        .then(_ => res.status(200).json({message: 'Publication supprimé'}))
+                        .catch(err => res.status(400).json({error: err.code}))
+                })
+        }))
 }
 
 exports.getAllPubli     = (req, res) => {
@@ -88,10 +132,7 @@ exports.getAllFrom      = (req, res) => {
     connexion()
         .then(con => {
             con.query(query, find)
-                .then(rows => {
-                    console.log(rows[0]);
-                        res.status(200).json(rows)
-                })
+                .then(rows => {res.status(200).json(rows)})
                 .catch(err => res.status(400).json({error: err.msg}))
         })
 }
@@ -104,3 +145,4 @@ exports.getOnePubli     = (req, res) => {
                 .catch(err => res.status(400).json({error: err.code}))
         })
 }
+
