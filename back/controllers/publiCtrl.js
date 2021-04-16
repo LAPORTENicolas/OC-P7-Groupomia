@@ -127,11 +127,11 @@ exports.getAll          = (req, res) => {
 
 exports.getAllFrom      = (req, res) => {
     const find          = '%' + req.body.find + '%';
-    const query         = "SELECT * FROM publication WHERE usernameUser LIKE ? ORDER BY date_post DESC";
+    const query         = "SELECT * FROM publication WHERE usernameUser LIKE ? OR description LIKE ? ORDER BY date_post DESC";
 
     connexion()
         .then(con => {
-            con.query(query, find)
+            con.query(query, [find, find])
                 .then(rows => {res.status(200).json(rows)})
                 .catch(err => res.status(400).json({error: err.msg}))
         })

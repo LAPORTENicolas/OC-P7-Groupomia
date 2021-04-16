@@ -3,18 +3,22 @@ import Loader from "../../../component/loader/loader";
 import Com from "../com/com";
 import Input from "../../../component/input/input";
 import Button from "../../../component/input/button";
+import Alert from "../../../component/alert/alert";
 
 class Publication extends Component {
     constructor(props) {
         super(props);
         this.state = {
             loading: true,
+            loadingCom: false,
             error: false,
             errorMsg: '',
             type: '',
             userId: props.userId,
             token: props.token,
             searchIndice: 1,
+            successCom: false,
+            successMessageCom: '',
             form: {
                 com: {
                     name: 'com',
@@ -63,6 +67,7 @@ class Publication extends Component {
     }
 
     sendCommentary(id, key) {
+        this.setState({loadingCom: true})
         let     err     = 0;
         const   input   = document.getElementById(this.state.form.com.name+key).value;
         const   regExp  = new RegExp(this.state.form.com.regExp);
@@ -70,7 +75,7 @@ class Publication extends Component {
         if (regExp.test(input)){
 
         } else {
-            this.setState({loading: false, error: true, errorMsg: 'Formulaire invalide'})
+            this.setState({loadingCom: false, error: true, errorMsg: 'Formulaire invalide'})
             return 0;
         }
 
@@ -87,9 +92,9 @@ class Publication extends Component {
         fetch(url, {method: 'POST', headers: headers, body: JSON.stringify(commentaryJ)})
             .then(res => {
                 if (res.ok){
-                    this.setState({loading: false, success: true, successMsg: 'Commentaire envoyé'})
+                    this.setState({loadingCom: false, successCom: true, successMessageCom: 'Commentaire envoyé'})
                 } else {
-                    this.setState({loadind: false, error: true, errorMsg: 'Une erreur est survenue'})
+                    this.setState({loadindCom: false, error: true, errorMsg: 'Une erreur est survenue'})
                 }
             })
     }
@@ -138,10 +143,11 @@ class Publication extends Component {
                         <div className="card-body bg-light shadow-sm">
                             <p className="card-text">{val.description}</p>
                             {val.commantary === '{}' ? null : <Com com={JSON.parse(val.commantary)}/>}
-                            <div>
-                                <Input className={['form-control']} value={''} name={this.state.form.com.name}
-                                       id={this.state.form.com.name + key} type={'text'} placeholder={'Commentaire'}/>
-                                <Button validationForm={this.sendCommentary.bind(this, val.id, key)}>Envoyer</Button>
+                            <div className={'form-publication'}>
+                                { this.state.successCom ? <Alert type={'success'}>{this.state.successMessageCom}</Alert> : null}
+                                { this.state.loadingCom ? <Loader/> : <>
+                                <Input className={['form-control']} value={''} name={this.state.form.com.name} id={this.state.form.com.name + key} type={'text'} placeholder={'Commentaire'} />
+                                <Button validationForm={this.sendCommentary.bind(this, val.id, key)}>Envoyer</Button></> }
                             </div>
                             <p>Poster par {val.usernameUser} le {date}</p>
                         </div>

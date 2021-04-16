@@ -1,0 +1,7 @@
+prototypeHTML/
+.idea
+OC-P7-Groupomia.iml
+/back/node_modules/
+/front/node_modules/
+/frontv2/node_modules/
+/back/upload/
