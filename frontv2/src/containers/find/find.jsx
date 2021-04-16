@@ -19,7 +19,7 @@ class Find extends Component {
                 com: {
                     name: 'com',
                     title: 'Commenter',
-                    url: 'http://localhost:3001/com/new',
+                    url: 'http://91.162.231.131:3001/com/new',
                     form: [
                         {
                             type: 'text',
@@ -49,7 +49,7 @@ class Find extends Component {
 
         // Initialisation des vars
         let     commentaryJ                 = {}
-        const   url                         = 'http://localhost:3001/commentary/new';
+        const   url                         = 'http://91.162.231.131:3001/commentary/new';
         const   username                    = this.props.username;
         const   headers                     = {'authorization': 'Baerer ' + this.state.token, 'content-type': 'application/json'}
         const   previousCom                 = JSON.parse(this.state.publication[key].commantary);
@@ -69,7 +69,7 @@ class Find extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        const url       = 'http://localhost:3001/publication/getAllFrom';
+        const url       = 'http://91.162.231.131:3001/publication/getAllFrom';
         const headers   = {'authorization': 'Baerer ' + this.state.token, 'content-type': 'application/json'}
 
         fetch(url, {method: 'POST', headers: headers, body: JSON.stringify({find: this.state.find})})

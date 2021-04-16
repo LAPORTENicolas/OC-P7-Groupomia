@@ -14,7 +14,7 @@ class CreatePublication extends Component {
                 publi: {
                     name: 'publication',
                     title: 'Créer une publication',
-                    url: 'http://localhost:3001/publication/new',
+                    url: 'http://91.162.231.131:3001/publication/new',
                     form: [
                         {
                             type: 'textarea',
@@ -40,7 +40,7 @@ class CreatePublication extends Component {
 
     async successCB(data) {
         // Initialisation des vars
-        const   url         = 'http://localhost:3001/publication/new';
+        const   url         = 'http://91.162.231.131:3001/publication/new';
         const   headers     = {'authorization': 'Baerer ' + this.state.token};
         const   onlyText    = data['file'] === undefined ? '1' : '0';
         const   file        = data['file'] === undefined ? null : data['file'];

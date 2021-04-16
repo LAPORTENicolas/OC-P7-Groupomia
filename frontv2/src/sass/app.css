@@ -33,4 +33,8 @@ img {
   max-height: 400px;
 }
 
+video {
+  max-height: 800px;
+}
+
 /*# sourceMappingURL=app.css.map */

@@ -25,7 +25,7 @@ class ListPublication extends Component {
                 publi: {
                     name: 'publication',
                     title: 'Modifier une publication',
-                    url: 'http://localhost:3001/publication/new',
+                    url: 'http://91.162.231.131:3001/publication/new',
                     form: [
                         {
                             type: 'textarea',
@@ -50,7 +50,7 @@ class ListPublication extends Component {
     }
 
     componentDidMount() {
-        const url       = 'http://localhost:3001/publication/getAll/' + this.state.userId;
+        const url       = 'http://91.162.231.131:3001/publication/getAll/' + this.state.userId;
         const headers   = { 'authorization': 'Baerer ' + this.state.token }
 
         fetch(url, {method: 'GET', headers: headers})
@@ -74,7 +74,7 @@ class ListPublication extends Component {
         this.setState({loading: true})
 
         const state     = [...this.state.publication];
-        const url       = 'http://localhost:3001/publication/delete';
+        const url       = 'http://91.162.231.131:3001/publication/delete';
         const headers   = {'authorization': 'Baerer ' + this.state.token, 'content-type': 'application/json'};
         const data      = {'userId': this.state.userId, 'id': this.state.publication[key].id}
 
@@ -92,7 +92,7 @@ class ListPublication extends Component {
 
     async successCB(data){
         // Initalisation des vars
-        const   url         = 'http://localhost:3001/publication/edit';
+        const   url         = 'http://91.162.231.131:3001/publication/edit';
         const   headers     = {'authorization': 'Baerer ' + this.state.token}
         const   file        = data['file'] === undefined ? undefined : data['file'];
         let     formData    = new FormData();
@@ -123,7 +123,7 @@ class ListPublication extends Component {
             publication = this.state.publication.map((val, key) => {
                 const date      = new Date(val.date_post).toLocaleDateString();
                 return <div className="card center border-0 col-10 mt-3" key={key}>
-                    {val.filePath ? <img src={val.filePath} className="card-img-top" alt="Image"/> : null}
+                    {val.filePath ? val.filePath.indexOf('.mp4') ? <video src={val.filePath} controls poster="vignette.jpg">Vidéo non supporte</video> : <img src={val.filePath} className="card-img-top" alt="Image"/> : null}
                     <div className="card-body bg-light shadow-sm">
                         <p className="card-text">{val.description}</p>
                         <p>Poster par {val.usernameUser} le {date}</p>

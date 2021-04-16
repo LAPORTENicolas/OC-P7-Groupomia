@@ -27,7 +27,7 @@ class Form extends Component {
     checkForm() {
         this.setState({loading: true, error: false})
 
-        const   type    = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif', 'image/svg+xml', 'image/webp']
+        const   type    = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif', 'image/svg+xml', 'image/webp', 'video/mp4']
         let     err     = 0;
         let     data    = {};
 

@@ -6,6 +6,7 @@ const MULTER_TYPE   = {
     'image/png': 'png',
     'image/svg+xml': 'svg',
     'image/gif': 'gif',
+    'video/mp4': 'mp4'
 }
 
 const storage       = multer.diskStorage({
