@@ -23,13 +23,22 @@ class User extends Component {
         }
     }
 
+    logout() {
+        if (localStorage.getItem('user')){
+            localStorage.removeItem('user');
+        }
+        this.setState({logged: false, username: '', email: '', token: ''})
+    }
+
     handleLogin(data){
+        console.log(data);
         localStorage.setItem('user', JSON.stringify(data));
         this.setState({id: data.userId, username: data.username, email: data.email, token: data.token, logged: true});
+        console.log(this.state);
     }
 
     render() {
-        return this.state.logged ? <App username={this.state.username} email={this.state.email} id={this.state.id} token={this.state.token} /> : <Login login={this.handleLogin.bind(this)} />
+        return this.state.logged ? <App logout={this.logout.bind(this)} username={this.state.username} email={this.state.email} id={this.state.id} token={this.state.token} /> : <Login login={this.handleLogin.bind(this)} />
     }
 }
 

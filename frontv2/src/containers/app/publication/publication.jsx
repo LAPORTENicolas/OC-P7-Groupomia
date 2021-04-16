@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Loader from "../../../component/loader/loader";
 import Com from "../com/com";
-import Form from "../../form/form";
 import Input from "../../../component/input/input";
 import Button from "../../../component/input/button";
 
@@ -42,7 +41,10 @@ class Publication extends Component {
             .then(res => {
                 if (res.ok){
                     res.json()
-                        .then(json => this.setState({loading: false, publication: json}))
+                        .then(json => {
+                            console.log(json);
+                            this.setState({loading: false, publication: json})
+                        })
                 } else {
                     this.setState({loading: false, error: true, errorMsg: 'Une erreur est survenue'})
                 }
@@ -107,7 +109,7 @@ class Publication extends Component {
                 console.log(val);
                 const date      = new Date(val.date_post).toLocaleDateString();
                 return <div className="card center border-0 col-10 mt-3" key={key}>
-                    {val.filePath ? val.filePath.indexOf('.mp4') ? <video src={val.filePath} controls poster="vignette.jpg" autoPlay>Vidéo non supporte</video> : <img src={val.filePath} className="card-img-top" alt="Image"/> : null}
+                    {val.filePath ? val.filePath.indexOf('.mp4') ? <video src={val.filePath} controls autoPlay>Vidéo non supporte</video> : <img src={val.filePath} className="card-img-top" alt="Image"/> : null}
                     <div className="card-body bg-light shadow-sm">
                         <p className="card-text">{val.description}</p>
                         { val.commantary === '{}' ? null : <Com com={JSON.parse(val.commantary)}/> }

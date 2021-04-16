@@ -89,7 +89,13 @@ class Login extends Component {
             .then(res => {
                 if (res.ok){
                     res.json()
-                        .then(data => this.props.login(data))
+                        .then(data => {
+                            if (this.state.formWanted === 'login') {
+                                this.props.login(data)
+                            } else {
+                                this.setState({formWanted: 'login'});
+                            }
+                        })
                     return true;
                 } else {
                     return res;

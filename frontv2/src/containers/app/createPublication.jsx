@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Form                 from "../form/form";
-import Header from "../header/header";
 
 class CreatePublication extends Component {
     constructor(props) {

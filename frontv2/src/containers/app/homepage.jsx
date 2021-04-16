@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import Publication from "./publication/publication";
 
 class Homepage extends Component {
-    constructor(props) {
-        super(props);
-    }
 
     render(){
         return <div className={'container'}>

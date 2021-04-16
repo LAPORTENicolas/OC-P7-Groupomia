@@ -123,7 +123,7 @@ class ListPublication extends Component {
             publication = this.state.publication.map((val, key) => {
                 const date      = new Date(val.date_post).toLocaleDateString();
                 return <div className="card center border-0 col-10 mt-3" key={key}>
-                    {val.filePath ? val.filePath.indexOf('.mp4') ? <video src={val.filePath} controls poster="vignette.jpg">Vidéo non supporte</video> : <img src={val.filePath} className="card-img-top" alt="Image"/> : null}
+                    {val.filePath ? val.filePath.indexOf('.mp4') ? <video src={val.filePath} controls>Vidéo non supporte</video> : <img src={val.filePath} className="card-img-top"/> : null}
                     <div className="card-body bg-light shadow-sm">
                         <p className="card-text">{val.description}</p>
                         <p>Poster par {val.usernameUser} le {date}</p>

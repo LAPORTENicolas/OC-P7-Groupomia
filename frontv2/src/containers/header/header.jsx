@@ -35,7 +35,7 @@ class Header extends Component {
                                 <li>
                                     <hr className="dropdown-divider" />
                                 </li>
-                                <li><p className="dropdown-item" onClick={this.props.logout}>Déconnexion</p></li>
+                                <li><p className="dropdown-item" onClick={_ => this.props.changePage('logout')}>Déconnexion</p></li>
                             </ul>
                         </li>
                     </ul>

@@ -25,7 +25,7 @@ class Form extends Component {
 
     // Permet de vérifier le formulaire
     checkForm() {
-        this.setState({loading: true, error: false})
+        this.setState({loading: true})
 
         const   type    = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif', 'image/svg+xml', 'image/webp', 'video/mp4']
         let     err     = 0;
@@ -86,6 +86,7 @@ class Form extends Component {
 
     // Permet d'afficher le formulaire
     render() {
+        console.log('render');
         const form = this.state.form.form.map((val, key) => {
             return <Input className={val.className} value={val.value} type={val.type} name={val.name} id={val.name} placeholder={val.placeholder} key={key}/>
         })
