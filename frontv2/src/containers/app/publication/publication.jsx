@@ -24,7 +24,6 @@ class Publication extends Component {
                 com: {
                     name: 'com',
                     title: 'Commenter',
-                    url: 'http://91.162.231.131:3001/com/new',
                     form: [
                         {
                             type: 'text',
@@ -50,7 +49,7 @@ class Publication extends Component {
     }
 
     componentDidMount() {
-        const url       = 'http://91.162.231.131:3001/publication/getAll';
+        const url       = `http://${window.location.host.replace(':3000', ':3001')}/publication/getAll`;
         const headers   = {'authorization': 'Baerer ' + this.state.token}
 
         fetch(url, {method: 'GET', headers: headers})
@@ -67,7 +66,7 @@ class Publication extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        const url       = 'http://91.162.231.131:3001/publication/getAll';
+        const url       = `http://${window.location.host.replace(':3000', ':3001')}/publication/getAll`;
         const headers   = {'authorization': 'Baerer ' + this.state.token}
 
         fetch(url, {method: 'GET', headers: headers})
@@ -108,8 +107,7 @@ class Publication extends Component {
                             <img src={val.filePath} className="card-img-top" alt="Image"/> : null}
                         <div className="card-body bg-light shadow-sm">
                             <p className="card-text">{val.description}</p>
-                            { <Commantary idPublicaiton={val.id} owner={val.idUser} token={this.state.token} userId={this.props.userId} username={this.props.username}/> }
-                            { /* val.commantary === '{}' ? null : <Com com={JSON.parse(val.commantary)}/> */}
+                            { <Commantary idPublicaiton={val.id} rank={this.props.rank} owner={val.idUser} token={this.state.token} userId={this.props.userId} username={this.props.username}/> }
                             <p>Poster par {val.usernameUser} le {date}</p>
                         </div>
                     </div>

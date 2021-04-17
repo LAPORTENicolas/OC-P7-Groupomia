@@ -6,7 +6,7 @@ class Homepage extends Component {
     render(){
         return <div className={'container'}>
             <h2>Les dernier publication</h2>
-            <Publication userId={this.props.id} username={this.props.username} token={this.props.token}/>
+            <Publication rank={this.props.rank} userId={this.props.id} username={this.props.username} token={this.props.token}/>
         </div>
     }
 

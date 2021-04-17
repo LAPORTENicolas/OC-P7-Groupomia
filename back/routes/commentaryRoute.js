@@ -5,5 +5,7 @@ const router            = express.Router();
 
 router.post('/new', auth, ctrlCommentary.new)
 router.get('/getAll/:id', auth, ctrlCommentary.getAllFromId)
+router.delete('/delete', auth, ctrlCommentary.delete);
+router.delete('/deleteAdmin', auth, ctrlCommentary.deleteAdmin);
 
 module.exports  = router;

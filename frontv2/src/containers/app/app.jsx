@@ -29,7 +29,7 @@ class App extends Component {
 
         switch (this.state.page){
             case 'homepage':
-                page = <Homepage id={this.props.id} username={this.props.username} email={this.props.email} token={this.props.token}/>
+                page = <Homepage id={this.props.id} username={this.props.username} rank={this.props.rank} email={this.props.email} token={this.props.token}/>
                 break;
 
             case 'find':

@@ -10,7 +10,6 @@ class Login extends Component {
                 login: {
                     name: 'login',
                     title: 'Connexion',
-                    url: 'http://localhost:3001/auth/login',
                     successMessage: '',
                     form: [
                         {
@@ -34,7 +33,6 @@ class Login extends Component {
                 register: {
                     name: 'register',
                     title: 'Inscription',
-                    url: 'http://localhost:3001/auth/register',
                     successMessage: 'Inscription reussie',
                     form: [
                         {
@@ -80,9 +78,9 @@ class Login extends Component {
 
         // Choisi le bon url
         if (this.state.formWanted === 'login'){
-            url = 'http://91.162.231.131:3001/auth/login';
+            url = `http://${window.location.host.replace(':3000', ':3001')}/auth/login`;
         } else {
-            url = 'http://91.162.231.131:3001/auth/register';
+            url = `http://${window.location.host.replace(':3000', ':3001')}/auth/register`;
         }
 
         return await fetch(url, {method: 'POST', headers: headers, body: JSON.stringify(data)})

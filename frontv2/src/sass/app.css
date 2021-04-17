@@ -81,4 +81,13 @@ video {
   justify-content: space-around;
 }
 
+.title-com {
+  display: flex;
+  justify-content: space-between;
+}
+
+.pointer:hover {
+  cursor: pointer;
+}
+
 /*# sourceMappingURL=app.css.map */

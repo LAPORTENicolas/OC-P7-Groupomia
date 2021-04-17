@@ -30,3 +30,41 @@ exports.getAllFromId    = (req, res) => {
                 .catch(err => res.status(400).json({error: err.code}))
         })
 }
+
+exports.delete          = (req, res) => {
+    const userId        = req.body.userId;
+    const commentId     = req.body.commentId;
+    const publicationId = req.body.idPublication;
+    const query         = 'DELETE commantary FROM commantary WHERE id = ? AND userID = ? AND idPublication = ?';
+    const data          = [commentId, userId, publicationId];
+
+    connection()
+        .then(con => {
+            con.query(query, data)
+                .then(_ => res.status(200).json({meesage: 'Commentaire supprimé'}))
+        })
+}
+
+exports.deleteAdmin     = (req, res) => {
+    const userId        = req.body.userId;
+    const commentId     = req.body.commentId;
+    const publicationId = req.body.idPublication;
+    const query         = 'DELETE commantary FROM commantary WHERE id = ? AND idPublication = ?';
+    const data          = [commentId, publicationId];
+
+    connection()
+        .then(con => {
+            con.query('SELECT admin FROM user WHERE id = ?', [userId])
+                .then(row => {
+                    if (row[0].admin === 0){
+                        res.status(401).json({message: 'Manque de privilèges'});
+                    } else {
+                        connection()
+                            .then(con => {
+                                con.query(query, data)
+                                    .then(_ => res.status(200).json({meesage: 'Commentaire supprimé'}))
+                            })
+                    }
+                });
+        })
+}

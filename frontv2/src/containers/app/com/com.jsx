@@ -15,11 +15,11 @@ class Commantary extends Component {
             loading: true,
             successCom: false,
             successMessageCom: '',
+            successDeleteCom: false,
             form: {
                 com: {
                     name: 'com',
                     title: 'Commenter',
-                    url: 'http://91.162.231.131:3001/com/new',
                     form: [
                         {
                             type: 'text',
@@ -36,7 +36,7 @@ class Commantary extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        const url       = 'http://localhost:3001/commentary/getAll/' + this.state.idPublication;
+        const url       = `http://${window.location.host.replace(':3000', ':3001')}/commentary/getAll/` + this.state.idPublication;
         const headers   = {'authorization': 'Bearer ' + this.props.token};
 
         fetch(url, {method: 'GET', headers: headers})
@@ -53,7 +53,7 @@ class Commantary extends Component {
     }
 
     componentDidMount() {
-        const url       = 'http://localhost:3001/commentary/getAll/' + this.state.idPublication;
+        const url       = `http://${window.location.host.replace(':3000', ':3001')}/commentary/getAll/` + this.state.idPublication;
         const headers   = {'authorization': 'Baerer ' + this.props.token}
 
         fetch(url, {method: 'GET', headers: headers})
@@ -72,7 +72,7 @@ class Commantary extends Component {
     }
 
     sendCommentary() {
-        this.setState({loadingCom: true})
+        this.setState({loadingCom: true, successDeleteCom: false, successCom: false})
         let     err     = 0;
         const   input   = document.getElementById(this.state.form.com.name+this.state.idPublication).value;
         const   regExp  = new RegExp(this.state.form.com.regExp);
@@ -85,7 +85,7 @@ class Commantary extends Component {
         }
 
         // Initialisation des vars
-        const   url         = 'http://91.162.231.131:3001/commentary/new';
+        const   url         = `http://${window.location.host.replace(':3000', ':3001')}/commentary/new`;
         const   username    = this.props.username;
         const   userId      = this.props.userId;
         const   idOwner     = this.props.owner;
@@ -105,20 +105,65 @@ class Commantary extends Component {
 
     }
 
+    onClick(val){
+        this.setState({successDeleteCom: false, successCom: false})
+
+        const userId            = this.props.userId;
+        const idPublication     = val.idPublication;
+        const commentId         = val.id;
+        const url               = `http://${window.location.host.replace(':3000', ':3001')}/commentary/delete`;
+        const headers           = {'authorization': 'Baerer ' + this.props.token, 'content-type': 'application/json'}
+        const data              = {idPublication: idPublication, userId: userId, commentId: commentId}
+
+        fetch(url, {method: 'DELETE', headers: headers, body: JSON.stringify(data)})
+            .then(res => {
+                if (res.ok){
+                    this.setState({successDeleteCom: true});
+                }
+            })
+    }
+
+    onClickAdmin(val){
+        this.setState({successDeleteCom: false, successCom: false})
+
+        const userId            = this.props.userId;
+        const idPublication     = val.idPublication;
+        const commentId         = val.id;
+        const url               = `http://${window.location.host.replace(':3000', ':3001')}/commentary/deleteAdmin`;
+        const headers           = {'authorization': 'Baerer ' + this.props.token, 'content-type': 'application/json'}
+        const data              = {idPublication: idPublication, userId: userId, commentId: commentId}
+
+        fetch(url, {method: 'DELETE', headers: headers, body: JSON.stringify(data)})
+            .then(res => {
+                if (res.ok){
+                    this.setState({successDeleteCom: true});
+                }
+            })
+    }
+
     render() {
-        let commantary = '';
+        let commantary  = '';
+        let headerCom   = '';
         if (this.state.loading === false) {
             commantary = this.state.commantary.map((val, key) => {
+                if (this.props.rank === 1){
+                    headerCom = <span className={'title-com'}><span>Poster par: <strong>{val.username}</strong></span><i onClick={this.onClickAdmin.bind(this, val)} className="fas fa-trash-alt pointer" /></span>
+                } else if (this.props.userId === val.userId) {
+                    headerCom = <span className={'title-com'}><span>Poster par: <strong>{val.username}</strong></span><i onClick={this.onClick.bind(this, val)} className="fas fa-trash-alt pointer" /></span>
+                } else {
+                    headerCom = <span>Poster par: <strong>{val.username}</strong></span>
+                }
                 return <div ref={key}
                     className={this.state.hidden ? 'container container-com hidden' : 'container container-com'}>
                     <div className={'com'}>
-                        <span>Poster par: <strong>{val.username}</strong></span>
+                        {headerCom}
                         <p>{val.message}</p>
                     </div>
                 </div>
             })
         }
         return <>
+            {this.state.successDeleteCom ? <Alert type={'success'}>Commentaire supprimé</Alert> : null }
             {commantary}
             <p onClick={this.onChange.bind(this)}>{this.state.hidden ? 'Afficher les commentaire' : 'Masquer les commentaire'}</p>
             <div className={'form-publication'}>

@@ -13,7 +13,6 @@ class CreatePublication extends Component {
                 publi: {
                     name: 'publication',
                     title: 'Créer une publication',
-                    url: 'http://91.162.231.131:3001/publication/new',
                     successMessage: 'Publication en ligne',
                     form: [
                         {
@@ -22,7 +21,7 @@ class CreatePublication extends Component {
                             value: '',
                             placeholder: 'Description',
                             className: ['form-control big-input'],
-                            regExp: '^([a-zA-Z0-9&éèà :/.?=https://twitter.com/tds/status/1383015549999968256?s=20]+)$'
+                            regExp: '^([a-zA-Z0-9&éèà :?!,.éèçàïê]+)$'
                         },
                         {
                             type: 'file',
@@ -40,7 +39,7 @@ class CreatePublication extends Component {
 
     async successCB(data) {
         // Initialisation des vars
-        const   url         = 'http://91.162.231.131:3001/publication/new';
+        const   url         =  `http://${window.location.host.replace(':3000', ':3001')}/publication/new`;
         const   headers     = {'authorization': 'Baerer ' + this.state.token};
         const   onlyText    = data['file'] === undefined ? '1' : '0';
         const   file        = data['file'] === undefined ? null : data['file'];

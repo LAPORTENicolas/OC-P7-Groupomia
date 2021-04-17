@@ -25,7 +25,6 @@ class AdminPage extends Component {
                 publi: {
                     name: 'publication',
                     title: 'Modifier une publication',
-                    url: 'http://91.162.231.131:3001/publication/new',
                     successMessage: 'Publication modifié',
                     form: [
                         {
@@ -51,7 +50,7 @@ class AdminPage extends Component {
     }
 
     componentDidMount() {
-        const url       = 'http://91.162.231.131:3001/publication/getAll';
+        const url       = `http://${window.location.host.replace(':3000', ':3001')}/publication/getAll`;
         const headers   = { 'authorization': 'Baerer ' + this.state.token }
 
         fetch(url, {method: 'GET', headers: headers})
@@ -75,7 +74,7 @@ class AdminPage extends Component {
         this.setState({loading: true})
 
         const state     = [...this.state.publication];
-        const url       = 'http://91.162.231.131:3001/publication/deleteAdmin';
+        const url       = `http://${window.location.host.replace(':3000', ':3001')}/publication/deleteAdmin`;
         const headers   = {'authorization': 'Baerer ' + this.state.token, 'content-type': 'application/json'};
         const data      = {'userId': this.state.userId, 'id': this.state.publication[key].id}
 
@@ -93,7 +92,7 @@ class AdminPage extends Component {
 
     async successCB(data){
         // Initalisation des vars
-        const   url         = 'http://91.162.231.131:3001/publication/editAdmin';
+        const   url         = `http://${window.location.host.replace(':3000', ':3001')}/publication/editAdmin`;
         const   headers     = {'authorization': 'Baerer ' + this.state.token}
         const   file        = data['file'] === undefined ? undefined : data['file'];
         let     formData    = new FormData();

@@ -15,7 +15,6 @@ class AccountEdit extends Component {
                 login: {
                     name: 'edit',
                     title: 'Modifier mon compte',
-                    url: 'http://localhost:3001/auth/edit',
                     successMessage: 'Modification enregistré',
                     form: [
                         {
@@ -60,7 +59,7 @@ class AccountEdit extends Component {
         // Initialisation des var
         data['id']      = this.state.id;
         const sendData  = JSON.stringify(data);
-        const url       = 'http://91.162.231.131:3001/auth/edit';
+        const url       = `http://${window.location.host.replace(':3000', ':3001')}/auth/edit`;
         const headers   = {'authorization': 'Baerer ' + this.state.token, 'content-type': 'application/json'}
 
         // Vérification du mot de passe
