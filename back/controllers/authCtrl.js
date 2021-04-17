@@ -58,10 +58,11 @@ exports.register    = (req, res) => {
 
 exports.delete      = (req, res) => {
     const id        = req.body.userId;
+    const query     = 'DELETE user, commantary, publication FROM user, commantary, publication WHERE user.id = ? AND publication.idUser = ? AND (commantary.userId = ? or commantary.idOwnerPublication = ?)'
 
     connection()
         .then(con => {
-            con.query('DELETE FROM user WHERE id = ?', [id])
+            con.query(query, [id, id, id, id])
                 .then(_ => res.status(200).json({message: 'Compte supprimé'}))
                 .catch(err => res.status(400).json({err}))
         })

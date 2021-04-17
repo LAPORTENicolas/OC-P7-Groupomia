@@ -38,9 +38,7 @@ class Form extends Component {
             const input     = document.getElementById(val.name);
             const inputVal  = val.type === 'file' ? input.files[0] : input.value;
             const regExp    = new RegExp(val.regExp);
-            console.log(inputVal);
-            console.log(regExp);
-            console.log(regExp.test(inputVal));
+
             if (inputVal === ''){
                 err++;
                 return 0;
@@ -73,7 +71,7 @@ class Form extends Component {
 
         // Si aucune erreur execute le callback sinon affiche une erreur
         if (err > 0) {
-            this.setState({errorMsg: 'Le formulaire est invalide', error: true})
+            this.setState({errorMsg: 'Le formulaire est invalide', error: true, loading: false})
         } else {
             // Execute le callback
             this.props.successCallBack(data)
@@ -102,8 +100,11 @@ class Form extends Component {
             {this.state.error ? <Alert type={'danger'}>{this.state.errorMsg}</Alert> : null}
             {this.state.success ? <Alert type={'success'}>{this.state.successMsg}</Alert> : null}
                 <h2>{this.state.form.title}</h2>
-            {this.state.loading ? <Loader/> : form}
+            {this.state.loading ? <Loader/> : <>
+                {form}
                 <Button validationForm={this.checkForm.bind(this)}>Valider le formulaire</Button>
+            </>
+            }
             {this.props.children === undefined ? null : this.props.children }
         </div>
     }

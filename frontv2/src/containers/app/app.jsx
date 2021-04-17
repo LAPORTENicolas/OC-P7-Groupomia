@@ -11,7 +11,7 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state ={
-            page: 'homepage',
+            page: 'userEdition',
             id: props.id,
             rank: props.rank,
             username: props.username,
@@ -44,8 +44,8 @@ class App extends Component {
                 page = <ListPublication userId={this.props.id} username={this.props.username} email={this.props.email} token={this.props.token}/>
                 break;
 
-            case 'editAccount':
-                page = <AccountEdit id={this.props.id} username={this.props.username} email={this.props.email} token={this.props.token} />
+            case 'userEdition':
+                page = <AccountEdit deleteAccount={this.props.deleteAccount} id={this.props.id} username={this.props.username} email={this.props.email} token={this.props.token} />
                 break;
 
             case 'adminPage':

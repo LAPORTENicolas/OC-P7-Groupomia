@@ -19,7 +19,7 @@ class CreatePublication extends Component {
                         {
                             type: 'textarea',
                             name: 'description',
-                            value: 'd',
+                            value: '',
                             placeholder: 'Description',
                             className: ['form-control big-input'],
                             regExp: '^([a-zA-Z0-9&éèà :/.?=https://twitter.com/tds/status/1383015549999968256?s=20]+)$'

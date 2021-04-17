@@ -21,6 +21,7 @@ class ListPublication extends Component {
             username: props.username,
             email: props.email,
             token: props.token,
+            valueDescription: '',
             form: {
                 publi: {
                     name: 'publication',
@@ -31,7 +32,7 @@ class ListPublication extends Component {
                         {
                             type: 'textarea',
                             name: 'description',
-                            value: 'd',
+                            value: '',
                             placeholder: 'Nouvelle description',
                             className: ['form-control big-input'],
                             regExp: '^([a-zA-Z0-9&éèà -_ç()!$£^¨]+)$'
@@ -68,7 +69,9 @@ class ListPublication extends Component {
     }
 
     handleChange(key){
-        this.setState({edit: true, idPublication: this.state.publication[key].id, publicationInfo: this.state.publication[key], keyPublication: key});
+        const test = this.state.form;
+        test.publi.form[0].value = this.state.publication[key].description;
+        this.setState({edit: true, idPublication: this.state.publication[key].id, publicationInfo: this.state.publication[key], keyPublication: key, form: test});
     }
 
     handleDelete(key){
@@ -148,6 +151,7 @@ class ListPublication extends Component {
                 <Form form={this.state.form.publi} successCallBack={this.successCB.bind(this)}/>
             </div>
         }
+
 
         return <div className={'container container-flex-col-center'}>
             {this.state.success ? <Alert type={'success'}>{this.state.successMsg}</Alert> : null}

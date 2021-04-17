@@ -6,9 +6,8 @@ exports.new             = (req, res) => {
     const onlyText      = req.body.onlyText;
     const description   = req.body.description;
     const filePath      = onlyText === '0' ? `${req.protocol}://${req.get('host')}/upload/${req.file.filename}` : null
-    const comantary     = JSON.stringify({});
-    const query         = "INSERT INTO publication SET idUser = ?, usernameUser = ?, description = ?, onlyText = ?, date_post = NOW(), filePath = ?, commantary = ?";
-    const data          = [id, username, description, onlyText, filePath, comantary];
+    const query         = "INSERT INTO publication SET idUser = ?, usernameUser = ?, description = ?, onlyText = ?, date_post = NOW(), filePath = ?";
+    const data          = [id, username, description, onlyText, filePath];
 
     connexion()
         .then (con => {
@@ -26,7 +25,6 @@ exports.edit            = (req, res) => {
     const file          = req.file === undefined ? undefined : `${req.protocol}://${req.get('host')}/upload/${req.file.filename}`;
     const onlyText      = req.file === undefined ? undefined : '0';
     const query         = req.file === undefined ? 'UPDATE publication SET description = ? WHERE id = ? AND idUser = ?' : 'UPDATE publication SET description = ?, onlyText = \'0\', filePath = ? WHERE id = ? AND idUser = ?'
-    console.log(file);
     const data          = req.file === undefined ? [description, id, userId] : [description, file, id, userId]
 
     connexion()
@@ -47,7 +45,7 @@ exports.editAdmin       = (req, res) => {
     const onlyText      = req.file === undefined ? undefined : '0';
     const query         = req.file === undefined ? 'UPDATE publication SET description = ? WHERE id = ?' : 'UPDATE publication SET description = ?, onlyText = \'0\', filePath = ? WHERE id = ?'
     const data          = req.file === undefined ? [description, id] : [description, file, id]
-    console.log(data);
+
     connexion()
         .then(con => con.query('SELECT admin FROM user WHERE id = ?', [userId]).then(row => {
             if (row[0].admin === 0) {
@@ -69,8 +67,8 @@ exports.editAdmin       = (req, res) => {
 exports.delete          = (req, res) => {
     const id            = req.body.id;
     const userId        = req.body.userId;
-    const query         = 'DELETE FROM publication WHERE id = ? AND idUser = ?';
-    const data          = [id, userId];
+    const query         = 'DELETE commantary, publication FROM commantary, publication WHERE commantary.idPublication = ? AND publication.id = ? AND publication.idUser = ?';
+    const data          = [id, id, userId];
 
     connexion()
         .then(con => {
@@ -83,8 +81,8 @@ exports.delete          = (req, res) => {
 exports.deleteAdmin     = (req, res) => {
     const id            = req.body.id;
     const userId        = req.body.userId;
-    const query         = 'DELETE FROM publication WHERE id = ?';
-    const data          = [id];
+    const query         = 'DELETE commantary, publication FROM commantary, publication WHERE commantary.idPublication = ? AND publication.id = ?';
+    const data          = [id, id];
 
     connexion()
         .then(con => con.query("SELECT admin FROM user WHERE id = ?", [userId]).then(row => {

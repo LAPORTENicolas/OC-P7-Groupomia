@@ -3,7 +3,6 @@ import React, { Component } from 'react'
 class Header extends Component {
 
     render() {
-        console.log(this.props.rank)
         return <header className="navbar navbar-expand-lg navbar-light bg-light ">
             <div className="container-fluid flex-space">
                 <p className="navbar-brand"><img src="img/icon-left-font-monochrome-black.svg" alt="logo" height="30px"/></p>

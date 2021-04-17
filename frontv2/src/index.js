@@ -32,14 +32,28 @@ class User extends Component {
     }
 
     handleLogin(data){
-        console.log(data);
         localStorage.setItem('user', JSON.stringify(data));
         this.setState({id: data.userId, username: data.username, email: data.email, token: data.token, logged: true, rank: data.admin});
-        console.log(this.state);
+    }
+
+    async deleteAccount() {
+        const data      = {userId: this.state.id};
+        const url       = 'http://localhost:3001/auth/delete';
+        const headers   = {'authorization': 'Baerer ' + this.state.token, 'content-type': 'application/json'}
+
+        fetch(url, {method: 'DELETE', headers: headers, body: JSON.stringify(data)})
+            .then(res => {
+                if (res.ok){
+                    this.setState({logged: false, rank: 0, username: '', email: '', token: '', id: ''});
+                } else {
+                    res.json()
+                        .then(json => console.log(json));
+                }
+            })
     }
 
     render() {
-        return this.state.logged ? <App rank={this.state.rank} logout={this.logout.bind(this)} username={this.state.username} email={this.state.email} id={this.state.id} token={this.state.token} /> : <Login login={this.handleLogin.bind(this)} />
+        return this.state.logged ? <App deleteAccount={this.deleteAccount.bind(this)} rank={this.state.rank} logout={this.logout.bind(this)} username={this.state.username} email={this.state.email} id={this.state.id} token={this.state.token} /> : <Login login={this.handleLogin.bind(this)} />
     }
 }
 

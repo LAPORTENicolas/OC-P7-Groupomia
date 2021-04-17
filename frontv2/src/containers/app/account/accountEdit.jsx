@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Form from "../../form/form";
+import Loader from "../../../component/loader/loader";
 
 class AccountEdit extends Component {
     constructor(props) {
@@ -8,6 +9,8 @@ class AccountEdit extends Component {
             username: props.username,
             token: props.token,
             id: props.id,
+            popUp: false,
+            loading: false,
             form: {
                 login: {
                     name: 'edit',
@@ -52,7 +55,7 @@ class AccountEdit extends Component {
             }
         }
     }
-//  { email: "sqdfsdfds@dsfsqdf.com", username: "sdfsdfsqdf", password: "fsqdfqsdf", passwordC: "sqdfdfsd" }
+
     async successCB(data) {
         // Initialisation des var
         data['id']      = this.state.id;
@@ -78,9 +81,34 @@ class AccountEdit extends Component {
             })
     }
 
+    handleClick(e) {
+        const popUp = !this.state.popUp;
+        console.log(popUp)
+        this.setState({popUp: popUp});
+    }
+
+    handleClickDelete() {
+        this.setState({loading: true})
+        this.props.deleteAccount();
+    }
+
     render() {
         return <div>
-            <Form form={this.state.form.login} successCallBack={this.successCB.bind(this)} />
+            {this.state.popUp ? null : null}
+            <div className={this.state.popUp ? 'pop-up-delete' : 'hidden'}>
+                { this.state.loading ? <h2>Compte en cours de suppression</h2> :
+                    <>
+                    <h2>Êtes vous sur de vouloir supprimer votre compte ? Cette action est iréversible</h2>
+                    <div>
+                    <button className={'btn btn-danger'} onClick={this.handleClickDelete.bind(this)}>Supprimer mon compte</button>
+                    <button className={'btn btn-success'} onClick={this.handleClick.bind(this)}>Ne pas supprimer mon compte</button>
+                    </div>
+                    </>
+                }
+            </div>
+            <Form form={this.state.form.login} successCallBack={this.successCB.bind(this)}>
+                <button className={'btn btn-danger mt-5 '} onClick={this.handleClick.bind(this)}>Supprimer mon compte</button>
+            </Form>
         </div>
     }
 }

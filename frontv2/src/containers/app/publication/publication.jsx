@@ -4,6 +4,7 @@ import Com from "../com/com";
 import Input from "../../../component/input/input";
 import Button from "../../../component/input/button";
 import Alert from "../../../component/alert/alert";
+import Commantary from "../com/com";
 
 class Publication extends Component {
     constructor(props) {
@@ -13,7 +14,7 @@ class Publication extends Component {
             loadingCom: false,
             error: false,
             errorMsg: '',
-            type: '',
+            type: 2,
             userId: props.userId,
             token: props.token,
             searchIndice: 1,
@@ -48,7 +49,6 @@ class Publication extends Component {
         this.setState({type: val});
     }
 
-
     componentDidMount() {
         const url       = 'http://91.162.231.131:3001/publication/getAll';
         const headers   = {'authorization': 'Baerer ' + this.state.token}
@@ -62,39 +62,6 @@ class Publication extends Component {
                         })
                 } else {
                     this.setState({loading: false, error: true, errorMsg: 'Une erreur est survenue'})
-                }
-            })
-    }
-
-    sendCommentary(id, key) {
-        this.setState({loadingCom: true})
-        let     err     = 0;
-        const   input   = document.getElementById(this.state.form.com.name+key).value;
-        const   regExp  = new RegExp(this.state.form.com.regExp);
-
-        if (regExp.test(input)){
-
-        } else {
-            this.setState({loadingCom: false, error: true, errorMsg: 'Formulaire invalide'})
-            return 0;
-        }
-
-        // Initialisation des vars
-        let     commentaryJ                 = {}
-        const   url                         = 'http://91.162.231.131:3001/commentary/new';
-        const   username                    = this.props.username;
-        const   headers                     = {'authorization': 'Baerer ' + this.state.token, 'content-type': 'application/json'}
-        const   previousCom                 = JSON.parse(this.state.publication[key].commantary);
-                commentaryJ['commentary']   = JSON.stringify(previousCom) === '{}' ? [{username: username, message: input}] : [...previousCom, {username: username, message: input}];
-                commentaryJ['id']           = id;
-
-        // Requete HTTP
-        fetch(url, {method: 'POST', headers: headers, body: JSON.stringify(commentaryJ)})
-            .then(res => {
-                if (res.ok){
-                    this.setState({loadingCom: false, successCom: true, successMessageCom: 'Commentaire envoyé'})
-                } else {
-                    this.setState({loadindCom: false, error: true, errorMsg: 'Une erreur est survenue'})
                 }
             })
     }
@@ -129,26 +96,20 @@ class Publication extends Component {
 
                 if (Date.parse(val.date_post) > dateSearch) {
                     const date = new Date(val.date_post).toLocaleDateString();
-                    console.log(this.state.type, val.onlyText)
-                    if (this.state.type !== '') {
+                    if (this.state.type !== 2) {
                         if (this.state.type !== val.onlyText) {
                             return '';
                         }
                     }
 
-                    return <div className="card center border-0 col-10 mt-3" key={key}>
+                    return <div className="card center border-0 col-10 mt-3">
                         {val.filePath ? val.filePath.indexOf('.mp4') !== -1 ?
                             <video src={val.filePath} controls>Vidéo non supporte</video> :
                             <img src={val.filePath} className="card-img-top" alt="Image"/> : null}
                         <div className="card-body bg-light shadow-sm">
                             <p className="card-text">{val.description}</p>
-                            {val.commantary === '{}' ? null : <Com com={JSON.parse(val.commantary)}/>}
-                            <div className={'form-publication'}>
-                                { this.state.successCom ? <Alert type={'success'}>{this.state.successMessageCom}</Alert> : null}
-                                { this.state.loadingCom ? <Loader/> : <>
-                                <Input className={['form-control']} value={''} name={this.state.form.com.name} id={this.state.form.com.name + key} type={'text'} placeholder={'Commentaire'} />
-                                <Button validationForm={this.sendCommentary.bind(this, val.id, key)}>Envoyer</Button></> }
-                            </div>
+                            { <Commantary idPublicaiton={val.id} owner={val.idUser} token={this.state.token} userId={this.props.userId} username={this.props.username}/> }
+                            { /* val.commantary === '{}' ? null : <Com com={JSON.parse(val.commantary)}/> */}
                             <p>Poster par {val.usernameUser} le {date}</p>
                         </div>
                     </div>
@@ -160,16 +121,24 @@ class Publication extends Component {
 
             {this.state.loading ? <Loader/> : <>  <div>
 
-                <div>
-                    <label>Unique textuelle</label>
-                    <input type={'radio'} name={'typePublication'} value={'onlyText'} onChange={_ => this.handleChange(1)} />
-                </div>
-                <div>
-                    <label>Unique Media</label>
-                    <input type={'radio'} name={'typePublication'} onChange={_ => this.handleChange(0)}/>
+                <div className={'container-checkbox-input'}>
+                    <div>
+                        <label>Tous</label>
+                        <input type={'radio'} name={'typePublication'} onChange={_ => this.handleChange(2)} />
+                    </div>
+                    <div>
+                        <label>Unique textuelle</label>
+                        <input id={'textRadio'} type={'radio'} name={'typePublication'} onChange={_ => this.handleChange(1)} />
+                    </div>
+                    <div>
+                        <label>Unique Media</label>
+                        <input type={'radio'} name={'typePublication'} onChange={_ => this.handleChange(0)}/>
+                    </div>
                 </div>
 
-            </div>   {publication} <button onClick={this.handleClick.bind(this)} className={'btn btn-primary'}>Plus de contenue</button></>}
+            </div>
+                {publication}
+                <button onClick={this.handleClick.bind(this)} className={'btn btn-primary mt-5 mb-5'}>Plus de contenue</button></>}
         </div>
     }
 }

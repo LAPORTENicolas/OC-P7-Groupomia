@@ -126,7 +126,7 @@ class AdminPage extends Component {
                 return <div className="card center border-0 col-10 mt-3" key={key}>
                     {val.filePath ? val.filePath.indexOf('.mp4') !== -1 ?
                         <video src={val.filePath} controls>Vidéo non supporte</video> :
-                        <img src={val.filePath} className="card-img-top" alt="Image"/> : null}
+                        <img src={val.filePath} className="card-img-top" alt="Ilustration publication"/> : null}
                         <div className="card-body bg-light shadow-sm">
                         <p className="card-text">{val.description}</p>
                         <p>Poster par {val.usernameUser} le {date}</p>
@@ -143,7 +143,7 @@ class AdminPage extends Component {
                 <h2>
                     { previousData.filePath === undefined ? null : previousData.filePath ? previousData.filePath.indexOf('.mp4') !== -1 ?
                             <>Vidéo actulle: <video src={previousData.filePath} controls>Vidéo non supporte</video></> :
-                            <>Image actuelle: <img src={previousData.filePath} className="card-img-top" alt="Image"/></> : null }
+                            <>Image actuelle: <img src={previousData.filePath} className="card-img-top" alt="Illustration publication"/></> : null }
                 </h2>
                 <Form form={this.state.form.publi} successCallBack={this.successCB.bind(this)}/>
             </div>
