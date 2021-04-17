@@ -65,35 +65,62 @@ exports.editAdmin       = (req, res) => {
 }
 
 exports.delete          = (req, res) => {
-    const id            = req.body.id;
-    const userId        = req.body.userId;
-    const query         = 'DELETE commantary, publication FROM commantary, publication WHERE commantary.idPublication = ? AND publication.id = ? AND publication.idUser = ?';
-    const data          = [id, id, userId];
+    let     data;
+    let     query       = '';
+    const   id          = req.body.id;
+    const   userId      = req.body.userId;
 
     connexion()
         .then(con => {
-            con.query(query, data)
-                .then(_ => res.status(200).json({message: 'Publication supprimé'}))
-                .catch(err => res.status(400).json({error: err.code}))
+            con.query("SELECT * FROM commantary WHERE idPublication = ?", id)
+                .then(row => {
+                    if (row[0] === undefined) {
+                        query   = 'DELETE publication FROM publication WHERE id = ? AND idUser = ?';
+                        data    = [id, userId];
+                    } else {
+                        query = 'DELETE publication, commantary FROM publication, commantary WHERE publication.id = ? AND commantary.idPublication = ? AND publication.idUser';
+                        data = [id, id, userId];
+                    }
+                    connexion()
+                        .then(con => {
+                            con.query(query, data)
+                                .then(_ => res.status(200).json({message: 'Publication supprimé'}))
+                                .catch(err => res.status(400).json({error: err.code}))
+                        })
         })
+    })
 }
 
 exports.deleteAdmin     = (req, res) => {
-    const id            = req.body.id;
-    const userId        = req.body.userId;
-    const query         = 'DELETE commantary, publication FROM commantary, publication WHERE commantary.idPublication = ? AND publication.id = ?';
-    const data          = [id, id];
+    let     data;
+    let     query       = '';
+    const   id          = req.body.id;
+    const   userId      = req.body.userId;
 
     connexion()
-        .then(con => con.query("SELECT admin FROM user WHERE id = ?", [userId]).then(row => {
-            row[0].admin === 0 ? res.status(401).json({error: 'Manque de priviléges'}) : null
-            connexion()
-                .then(con => {
-                    con.query(query, data)
-                        .then(_ => res.status(200).json({message: 'Publication supprimé'}))
-                        .catch(err => res.status(400).json({error: err.code}))
-                })
-        }))
+        .then(con => {
+            con.query("SELECT * FROM commantary WHERE idPublication = ?", id)
+                .then(row => {
+                    if (row[0] === undefined){
+                        query   = 'DELETE publication FROM publication WHERE id = ?';
+                        data    = [id];
+                    } else {
+                        query   = 'DELETE publication, commantary FROM publication, commantary WHERE publication.id = ? AND commantary.idPublication = ?';
+                        data    = [id, id];
+                    }
+                    connexion()
+                        .then(con => con.query("SELECT admin FROM user WHERE id = ?", [userId]).then(row => {
+                            row[0].admin === 0 ? res.status(401).json({error: 'Manque de priviléges'}) : null
+
+                            connexion()
+                                .then(con => {
+                                    con.query(query, data)
+                                        .then(_ => res.status(200).json({message: 'Publication supprimé'}))
+                                        .catch(err => res.status(400).json({error: err.code}))
+                                })
+                        }))
+                });
+    })
 }
 
 exports.getAllPubli     = (req, res) => {
@@ -143,4 +170,3 @@ exports.getOnePubli     = (req, res) => {
                 .catch(err => res.status(400).json({error: err.code}))
         })
 }
-
