@@ -169,7 +169,7 @@ class Commantary extends Component {
         return <>
             {this.state.successDeleteCom ? <Alert type={'success'}>Commentaire supprimé</Alert> : null }
             {commantary}
-            <p onClick={this.onChange.bind(this)}>{this.state.hidden ? 'Afficher les commentaire' : 'Masquer les commentaire'}</p>
+            <p className={'link pointer'} onClick={this.onChange.bind(this)}>{this.state.hidden ? 'Afficher les commentaire' : 'Masquer les commentaire'}</p>
             <div className={'form-publication'}>
                 { this.state.successCom ? <Alert type={'success'}>{this.state.successMessageCom}</Alert> : null}
                 { this.state.loadingCom ? <Loader/> : <>
