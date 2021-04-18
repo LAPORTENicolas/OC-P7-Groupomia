@@ -11,7 +11,7 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state ={
-            page: 'userEdition',
+            page: 'homepage',
             id: props.id,
             rank: props.rank,
             username: props.username,

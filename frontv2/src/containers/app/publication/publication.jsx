@@ -84,7 +84,6 @@ class Publication extends Component {
     }
 
     render() {
-        console.log('render');
         // Initilisation des var
         let publication;
         let actualTime  = new Date();

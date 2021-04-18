@@ -21,7 +21,7 @@ class CreatePublication extends Component {
                             value: '',
                             placeholder: 'Description',
                             className: ['form-control big-input'],
-                            regExp: '^([a-zA-Z0-9&éèà :?!,.éèçàïê]+)$'
+                            regExp: '^([a-zA-Z0-9 &é\'(èçà@)$êïù!?,]+)$'
                         },
                         {
                             type: 'file',

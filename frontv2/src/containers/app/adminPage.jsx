@@ -67,6 +67,8 @@ class AdminPage extends Component {
     }
 
     handleChange(key){
+        const test = this.state.form;
+        test.publi.form[0].value = this.state.publication[key].description;
         this.setState({edit: true, idPublication: this.state.publication[key].id, publicationInfo: this.state.publication[key], keyPublication: key});
     }
 

@@ -8,6 +8,7 @@ class Commantary extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            rank: props.rank,
             idPublication: props.idPublicaiton,
             idOwnerPublication: props.owner,
             hidden: true,
@@ -146,9 +147,12 @@ class Commantary extends Component {
         let headerCom   = '';
         if (this.state.loading === false) {
             commantary = this.state.commantary.map((val, key) => {
-                if (this.props.rank === 1){
+                console.log(this.state.rank)
+                if (this.state.rank === 1){
+                    console.log('admin')
                     headerCom = <span className={'title-com'}><span>Poster par: <strong>{val.username}</strong></span><i onClick={this.onClickAdmin.bind(this, val)} className="fas fa-trash-alt pointer" /></span>
                 } else if (this.props.userId === val.userId) {
+                    console.log('user');
                     headerCom = <span className={'title-com'}><span>Poster par: <strong>{val.username}</strong></span><i onClick={this.onClick.bind(this, val)} className="fas fa-trash-alt pointer" /></span>
                 } else {
                     headerCom = <span>Poster par: <strong>{val.username}</strong></span>

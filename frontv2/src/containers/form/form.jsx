@@ -79,8 +79,11 @@ class Form extends Component {
                     // Si tout c'est bien passé
                   if (res === true){
                       this.setState({loading: false, success: true, successMsg: this.state.form.successMessage})
-                  }else {
-                      // Si il y a une erreur affiche l'erreur
+                  } else if(res === false) {
+                      // Si il y a une erreur
+                      this.setState({loading: false, error: true, errorMsg: 'Formulaire invalide'})
+                  } else {
+                      // Si il y a une erreur affiche l'erreur detexter par l'api
                       res.json()
                           .then(json => this.setState({loading: false, error: true, errorMsg: json.error}))
                   }

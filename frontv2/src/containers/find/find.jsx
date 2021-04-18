@@ -3,6 +3,7 @@ import Input from "../../component/input/input";
 import Com from "../app/com/com";
 import Button from "../../component/input/button";
 import Loader from "../../component/loader/loader";
+import Commantary from "../app/com/com";
 
 class Find extends Component {
     constructor(props) {
@@ -102,7 +103,7 @@ class Find extends Component {
                         <img src={val.filePath} className="card-img-top" alt="Image"/> : null}
                     <div className="card-body bg-light shadow-sm">
                         <p className="card-text">{val.description}</p>
-                        { val.commantary === '{}' ? null : <Com com={JSON.parse(val.commantary)}/> }
+                        { <Commantary idPublicaiton={val.id} rank={this.props.rank} owner={val.idUser} token={this.state.token} userId={this.props.userId} username={this.props.username}/> }
                         <div>
                             <Input className={['form-control']} value={''} name={this.state.form.com.name} id={this.state.form.com.name+key} type={'text'} placeholder={'Commentaire'}/>
                             <Button validationForm={this.sendCommentary.bind(this, val.id, key)} >Envoyer</Button>
