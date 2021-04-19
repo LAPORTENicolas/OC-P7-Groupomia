@@ -36,7 +36,7 @@ const Input = (props) => {
     }
 
     return <div className='mb-3'>
-            <label className='form-label'>{props.placeholder}:</label>
+            <label className='form-label' htmlFor={props.id}>{props.placeholder}:</label>
         {input}
     </div>
 }

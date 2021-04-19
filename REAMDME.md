@@ -5,5 +5,5 @@ Pour le dossier back
   - nodemon server ou node server
   
 Pourt le dossier front
-  - npm install
-  - yarn start
+  - yarn install
+  - yarn start 

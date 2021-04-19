@@ -116,7 +116,8 @@ class Find extends Component {
 
         return<>
         <div className={'findBar'}>
-                <input type={'text'} name={'find'} className={'form-control'} placeholder={'Rechercher par utilisateur'} value={this.state.find} onChange={this.handleChange.bind(this)}/>
+            <label htmlFor={'find-input'}>Rechercher</label>
+            <input type={'text'} id={'find-input'} name={'find'} className={'form-control'} placeholder={'Rechercher par utilisateur'} value={this.state.find} onChange={this.handleChange.bind(this)}/>
         </div>
             <div className={'container container-flex-col-center'}>
                 {this.state.loading ? <Loader/> : publication }

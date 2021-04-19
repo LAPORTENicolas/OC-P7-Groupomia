@@ -159,16 +159,16 @@ class Publication extends Component {
 
                 <div className={'container-checkbox-input'}>
                     <div>
-                        <label>Tous</label>
-                        <input type={'radio'} name={'typePublication'} onChange={_ => this.handleChange(2)} />
+                        <label htmlFor={'radio-all'}>Tous</label>
+                        <input id={'radio-all'} type={'radio'} name={'typePublication'} onChange={_ => this.handleChange(2)} />
                     </div>
                     <div>
-                        <label>Unique textuelle</label>
-                        <input id={'textRadio'} type={'radio'} name={'typePublication'} onChange={_ => this.handleChange(1)} />
+                        <label htmlFor={'radio-text'}>Unique textuelle</label>
+                        <input id={'radio-text'} type={'radio'} name={'typePublication'} onChange={_ => this.handleChange(1)} />
                     </div>
                     <div>
-                        <label>Unique Media</label>
-                        <input type={'radio'} name={'typePublication'} onChange={_ => this.handleChange(0)}/>
+                        <label htmlFor={'radio-media'}>Unique Media</label>
+                        <input id={'radio-media'} type={'radio'} name={'typePublication'} onChange={_ => this.handleChange(0)}/>
                     </div>
                 </div>
 
