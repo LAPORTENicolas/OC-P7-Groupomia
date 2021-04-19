@@ -59,7 +59,7 @@ class Publication extends Component {
         fetch(url, {method: `${checked ? 'DELETE' : 'POST'}`, headers: headers, body: JSON.stringify(data)})
             .then(res => {
                 if (res.ok){
-                    this.setState({loading: true})
+                    this.setState({refresh: true})
                 }
             })
     }

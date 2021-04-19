@@ -18,6 +18,10 @@
 .card .com p {
   margin-left: 10px;
 }
+.card img {
+  max-height: 600px;
+  object-fit: contain;
+}
 
 .hidden {
   display: none;
@@ -59,7 +63,6 @@ video {
   background-color: #f9f9f9;
 }
 .container-checkbox-input div {
-  margin: 0 1rem;
   padding: 2rem;
 }
 
@@ -167,7 +170,7 @@ video {
 
 @keyframes icon-coeur {
   from {
-    transform: translateY(-5px) rotate(0deg);
+    transform: translateY(-5px) rotate(0deg) scale(1);
   }
   to {
     transform: translateY(-95%) translateX(-4px) rotate(180deg);
