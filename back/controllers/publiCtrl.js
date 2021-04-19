@@ -1,4 +1,5 @@
 const connexion         = require('../bdd');
+const fs                = require('fs');
 
 exports.new             = (req, res) => {
     const id            = req.body.id;
@@ -83,9 +84,30 @@ exports.delete          = (req, res) => {
                     }
                     connexion()
                         .then(con => {
-                            con.query(query, data)
-                                .then(_ => res.status(200).json({message: 'Publication supprimé'}))
-                                .catch(err => res.status(400).json({error: err.code}))
+                            con.query("SELECT filePath FROM publication WHERE id = ?", id)
+                                .then(row => {
+                                    if (row[0] === undefined){
+                                    } else {
+                                        const file  = row[0].filePath === null ? undefined :row[0].filePath.split('/upload/')[1];
+                                        if (file === undefined){
+                                            connexion()
+                                                .then(con => {
+                                                    con.query(query, data)
+                                                        .then(_ => res.status(200).json({message: 'Publication supprimé'}))
+                                                        .catch(err => res.status(400).json({error: err.code}))
+                                                })
+                                        } else {
+                                            fs.unlink( `upload/${file}`, _ => {
+                                                connexion()
+                                                    .then(con => {
+                                                        con.query(query, data)
+                                                            .then(_ => res.status(200).json({message: 'Publication supprimé'}))
+                                                            .catch(err => res.status(400).json({error: err.code}))
+                                                    })
+                                            })
+                                        }
+                                    }
+                                })
                         })
         })
     })
