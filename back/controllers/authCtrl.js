@@ -70,49 +70,22 @@ exports.delete      = (req, res) => {
 
 exports.edit        = (req, res) => {
 
-    const username  = req.body.username;
-    const email     = req.body.email;
-    const password  = req.body.password;
-    const id        = req.body.id;
-    let query       = '';
-    let data;
-    let     publication = false;
-    let     commentary  = false;
+    const username = req.body.username;
+    const email = req.body.email;
+    const password = req.body.password;
+    const id = req.body.id;
 
-    connection()
-        .then(con => {
-            con.query("SELECT * FROM publication WHERE idUser = ?", id)
-                .then(row => {
-                    if (row[0] !== undefined){
-                        publication = true;
-                    }
-                    con.query("SELECT * FROM commantary WHERE userId = ?", id)
+    bcrypt.hash(password, 10)
+        .then(hash => {
+            connection()
+                .then(con => {
+                    con.query("UPDATE user SET username = ?, email = ?, password = ? WHERE id = ?", [username, email, hash, id])
                         .then(row => {
-                            if (row[0] !== undefined){
-                                commentary = true
-                            }
-                            bcrypt.hash(password, 10)
-                                .then(hash => {
-                                    if (commentary === true && publication === false){
-                                        query   = "UPDATE commantary, user SET commantary.username = ?, user.username = ?, user.email = ?, user.password = ? WHERE user.id = ? AND commantary.userId = ?"
-                                        data    = [username, username, email, hash, id, id];
-                                    } else if (commentary === false && publication === true){
-                                        query   = "UPDATE publication, user SET publication.usernameUser = ?, user.username = ?, user.email = ?, user.password = ? WHERE user.id = ? AND publication.idUser = ?"
-                                        data    = [username, username, email, hash, id, id];
-                                    } else if (commentary === true && publication === true){
-                                        query   = "UPDATE commantary, publication, user SET publication.usernameUser = ?, commantary.username = ?, user.username = ?, user.email = ?, user.password = ? WHERE user.id = ? AND commantary.userId = ? AND publication.idUser = ?"
-                                        data    = [username, username, username, email, hash, id, id, id];
-                                    } else if (commentary === false && publication === false){
-                                        query   = "UPDATE user SET username = ?, email = ?, password = ? WHERE id = ?"
-                                        data    = [username, email, hash, id];
-                                    }
-
-                                    connection()
-                                        .then(con => {
-                                            con.query(query, data)
-                                                .then(_ => res.status(200).json({message: 'Modification effectué'}))
-                                                .catch(err => res.status(400).json({error: err.code}))
-                                        })
+                            connection()
+                                .then(con => {
+                                    con.query("UPDATE commantary SET username = ? WHERE userId = ?", [username, id]);
+                                    con.query("UPDATE publication SET usernameUser = ? WHERE idUser = ?", [username, id])
+                                    res.status(200).json({message: 'Compte modifié'})
                                 })
                         })
                 })

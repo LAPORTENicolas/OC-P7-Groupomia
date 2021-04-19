@@ -45,7 +45,7 @@ class App extends Component {
                 break;
 
             case 'userEdition':
-                page = <AccountEdit deleteAccount={this.props.deleteAccount} id={this.props.id} username={this.props.username} email={this.props.email} token={this.props.token} />
+                page = <AccountEdit refreshUser={this.props.refreshUser} deleteAccount={this.props.deleteAccount} id={this.props.id} username={this.props.username} email={this.props.email} token={this.props.token} />
                 break;
 
             case 'adminPage':

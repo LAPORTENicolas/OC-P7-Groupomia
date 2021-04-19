@@ -36,6 +36,12 @@ class User extends Component {
         this.setState({id: data.userId, username: data.username, email: data.email, token: data.token, logged: true, rank: data.admin});
     }
 
+    refreshUser(data){
+        this.setState({username: data.username, email: data.email})
+        console.log(data);
+        console.log(this.state);
+    }
+
     async deleteAccount() {
         const data      = {userId: this.state.id};
         const url       = 'http://localhost:3001/auth/delete';
@@ -53,7 +59,7 @@ class User extends Component {
     }
 
     render() {
-        return this.state.logged ? <App deleteAccount={this.deleteAccount.bind(this)} rank={this.state.rank} logout={this.logout.bind(this)} username={this.state.username} email={this.state.email} id={this.state.id} token={this.state.token} /> : <Login login={this.handleLogin.bind(this)} />
+        return this.state.logged ? <App refreshUser={this.refreshUser.bind(this)} deleteAccount={this.deleteAccount.bind(this)} rank={this.state.rank} logout={this.logout.bind(this)} username={this.state.username} email={this.state.email} id={this.state.id} token={this.state.token} /> : <Login login={this.handleLogin.bind(this)} />
     }
 }
 

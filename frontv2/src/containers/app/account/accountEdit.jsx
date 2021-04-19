@@ -72,7 +72,7 @@ class AccountEdit extends Component {
             .then(res => {
                 if (res.ok){
                     res.json()
-                        .then(json => console.log(json))
+                        .then(_ => this.props.refreshUser(data))
                     return true;
                 } else {
                     return res;

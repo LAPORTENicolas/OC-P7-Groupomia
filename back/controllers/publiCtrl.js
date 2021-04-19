@@ -162,7 +162,7 @@ exports.getAllPubli     = (req, res) => {
 }
 
 exports.getAll          = (req, res) => {
-    const query         = "SELECT * FROM publication LEFT JOIN userLike ON userLike.publicationId = publication.id AND userLike.userId = ?";
+    const query         = "SELECT * FROM publication LEFT JOIN userLike ON userLike.publicationId = publication.id AND userLike.userId = ? ORDER BY publication.date_post DESC";
     const data          = [req.body.userId];
 
     connexion()
