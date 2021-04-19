@@ -58,7 +58,10 @@ class Form extends Component {
                         return 0;
                     }
                 } else {
-                    if (inputVal.length > 30){
+                    if (inputVal.length > 30 && val.type !== 'textarea'){
+                        err++;
+                        return 0;
+                    } else if (inputVal.length > 254 && val.type === 'textarea'){
                         err++;
                         return 0;
                     }
@@ -94,7 +97,6 @@ class Form extends Component {
 
     // Permet d'afficher le formulaire
     render() {
-        console.log('render');
         const form = this.state.form.form.map((val, key) => {
             return <Input regExp={val.regExp} className={val.className} value={val.value} type={val.type} name={val.name} id={val.name} placeholder={val.placeholder} key={key}/>
         })

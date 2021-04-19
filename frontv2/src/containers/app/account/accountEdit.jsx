@@ -80,9 +80,8 @@ class AccountEdit extends Component {
             })
     }
 
-    handleClick(e) {
+    handleClick() {
         const popUp = !this.state.popUp;
-        console.log(popUp)
         this.setState({popUp: popUp});
     }
 

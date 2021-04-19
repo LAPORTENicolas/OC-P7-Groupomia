@@ -51,9 +51,10 @@ class AdminPage extends Component {
 
     componentDidMount() {
         const url       = `http://${window.location.host.replace(':3000', ':3001')}/publication/getAll`;
-        const headers   = { 'authorization': 'Baerer ' + this.state.token }
+        const headers   = { 'authorization': 'Baerer ' + this.state.token, 'content-type': 'application/json'}
+        const body      = {userId: this.state.userId}
 
-        fetch(url, {method: 'GET', headers: headers})
+        fetch(url, {method: 'POST', headers: headers, body: JSON.stringify(body)})
             .then(res => {
                 if (res.ok){
                     res.json()

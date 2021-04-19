@@ -5,6 +5,7 @@ const path              = require('path');
 const routeAuth         = require('./routes/authRoute');
 const routePubli        = require('./routes/publiRoute');
 const routeCommentary   = require('./routes/commentaryRoute');
+const routeLike         = require('./routes/likeRoute');
 const app               = express();
 
 app.use(express.json());
@@ -22,6 +23,7 @@ app.use((req, res, next) => {
 app.use('/upload', express.static(path.join(__dirname, 'upload')));
 app.use('/publication', routePubli);
 app.use('/commentary', routeCommentary);
+app.use('/like', routeLike);
 app.use('/auth', routeAuth);
 
 module.exports      = app;

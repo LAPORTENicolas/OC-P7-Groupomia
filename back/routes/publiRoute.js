@@ -10,7 +10,7 @@ router.delete('/deleteAdmin', auth, ctrlPubli.deleteAdmin);
 router.put('/edit', auth, multer, ctrlPubli.edit);
 router.put('/editAdmin', auth, multer, ctrlPubli.edit);
 router.get('/getAll/:id', auth, ctrlPubli.getAllPubli);
-router.get('/getAll', auth, ctrlPubli.getAll);
+router.post('/getAll', auth, ctrlPubli.getAll);
 router.post('/getAllFrom', auth, ctrlPubli.getAllFrom);
 router.get('/getOne/:id', auth, ctrlPubli.getOnePubli);
 

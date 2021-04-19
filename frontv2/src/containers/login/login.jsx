@@ -67,7 +67,6 @@ class Login extends Component {
 
     handleChangeForm() {
         const state = this.state.formWanted === 'login' ? 'register' : 'login';
-        console.log(this.state);
         this.setState({formWanted: state});
     }
 

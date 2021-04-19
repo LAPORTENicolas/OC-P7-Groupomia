@@ -140,11 +140,12 @@ exports.getAllPubli     = (req, res) => {
 }
 
 exports.getAll          = (req, res) => {
-    const query         = "SELECT * FROM publication ORDER BY date_post DESC";
+    const query         = "SELECT * FROM publication LEFT JOIN userLike ON userLike.publicationId = publication.id AND userLike.userId = ?";
+    const data          = [req.body.userId];
 
     connexion()
         .then(con => {
-            con.query(query)
+            con.query(query, data)
                 .then(rows => res.status(200).json(rows))
                 .catch(err => res.status(400).json({error: err.code}))
         })

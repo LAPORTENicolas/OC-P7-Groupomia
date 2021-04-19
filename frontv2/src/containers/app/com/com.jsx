@@ -74,12 +74,12 @@ class Commantary extends Component {
 
     sendCommentary() {
         this.setState({loadingCom: true, successDeleteCom: false, successCom: false})
+
         let     err     = 0;
         const   input   = document.getElementById(this.state.form.com.name+this.state.idPublication).value;
         const   regExp  = new RegExp(this.state.form.com.regExp);
 
-        if (regExp.test(input)){
-
+        if (regExp.test(input) && input.length >= 1 && input.length <= 200){
         } else {
             this.setState({loadingCom: false, error: true, errorMsg: 'Formulaire invalide'})
             return 0;
@@ -149,10 +149,8 @@ class Commantary extends Component {
             commantary = this.state.commantary.map((val, key) => {
                 console.log(this.state.rank)
                 if (this.state.rank === 1){
-                    console.log('admin')
                     headerCom = <span className={'title-com'}><span>Poster par: <strong>{val.username}</strong></span><i onClick={this.onClickAdmin.bind(this, val)} className="fas fa-trash-alt pointer" /></span>
                 } else if (this.props.userId === val.userId) {
-                    console.log('user');
                     headerCom = <span className={'title-com'}><span>Poster par: <strong>{val.username}</strong></span><i onClick={this.onClick.bind(this, val)} className="fas fa-trash-alt pointer" /></span>
                 } else {
                     headerCom = <span>Poster par: <strong>{val.username}</strong></span>
@@ -166,17 +164,18 @@ class Commantary extends Component {
                 </div>
             })
         }
-        return <>
+        return <div className={'container-com'}>
             {this.state.successDeleteCom ? <Alert type={'success'}>Commentaire supprimé</Alert> : null }
             {commantary}
             <p className={'link pointer'} onClick={this.onChange.bind(this)}>{this.state.hidden ? 'Afficher les commentaire' : 'Masquer les commentaire'}</p>
             <div className={'form-publication'}>
                 { this.state.successCom ? <Alert type={'success'}>{this.state.successMessageCom}</Alert> : null}
+                {this.state.error ? <Alert type={'danger'}>Commentaire invalide</Alert> : null }
                 { this.state.loadingCom ? <Loader/> : <>
                     <Input className={['form-control']} value={''} name={this.state.form.com.name} id={this.state.form.com.name+this.state.idPublication} type={'text'} placeholder={'Commentaire'} />
                     <Button validationForm={this.sendCommentary.bind(this)}>Envoyer</Button></> }
             </div>
-        </>
+        </div>
     }
 }
 
