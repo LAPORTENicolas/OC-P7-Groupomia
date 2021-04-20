@@ -47,21 +47,6 @@ class Header extends Component {
                             </ul>
                         </li>
 
-                        <li className="nav-item dropdown">
-                            <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false">
-                                Dropdown
-                            </a>
-                            <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><p className="dropdown-item" onClick={_ => this.props.changePage('userEdition')}>Editer mes infomations</p></li>
-                                <li><a className="dropdown-item" href="#">Another action</a></li>
-                                <li>
-                                    <hr className="dropdown-divider" />
-                                </li>
-                                <li><p className="dropdown-item" href="#">Something else here</p></li>
-                            </ul>
-                        </li>
-
                         {this.props.rank === 1 ?
                             <li className="nav-item" onClick={_ => this.props.changePage('adminPage')}>
                                 <p className={this.props.active === 'adminPage' ? "nav-link active" : "nav-link" } aria-current="page">Administration</p>

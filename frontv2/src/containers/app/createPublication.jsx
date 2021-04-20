@@ -40,7 +40,7 @@ class CreatePublication extends Component {
     async successCB(data) {
         // Initialisation des vars
         const   url         =  `http://${window.location.host.replace(':3000', ':3001')}/publication/new`;
-        const   headers     = {'authorization': 'Baerer ' + this.state.token};
+        const   headers     = {'authorization': 'Bearer ' + this.state.token};
         const   onlyText    = data['file'] === undefined ? '1' : '0';
         const   file        = data['file'] === undefined ? null : data['file'];
         let     formData    = new FormData();

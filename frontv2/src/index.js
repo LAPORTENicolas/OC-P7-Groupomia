@@ -38,8 +38,6 @@ class User extends Component {
 
     refreshUser(data){
         this.setState({username: data.username, email: data.email})
-        console.log(data);
-        console.log(this.state);
     }
 
     async deleteAccount() {
@@ -47,7 +45,7 @@ class User extends Component {
         const url       = 'http://localhost:3001/auth/delete';
         const headers   = {'authorization': 'Baerer ' + this.state.token, 'content-type': 'application/json'}
 
-        fetch(url, {method: 'DELETE', headers: headers, body: JSON.stringify(data)})
+        return await fetch(url, {method: 'DELETE', headers: headers, body: JSON.stringify(data)})
             .then(res => {
                 if (res.ok){
                     this.setState({logged: false, rank: 0, username: '', email: '', token: '', id: ''});

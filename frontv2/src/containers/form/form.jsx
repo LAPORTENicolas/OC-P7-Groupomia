@@ -94,7 +94,6 @@ class Form extends Component {
         }
     }
 
-
     // Permet d'afficher le formulaire
     render() {
         const form = this.state.form.form.map((val, key) => {

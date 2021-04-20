@@ -88,7 +88,7 @@ exports.delete          = (req, res) => {
                                 .then(row => {
                                     if (row[0] === undefined){
                                     } else {
-                                        const file  = row[0].filePath === null ? undefined :row[0].filePath.split('/upload/')[1];
+                                        const file  = row[0].filePath === null ? undefined : row[0].filePath.split('/upload/')[1];
                                         if (file === undefined){
                                             connexion()
                                                 .then(con => {

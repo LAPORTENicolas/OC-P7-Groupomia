@@ -19,7 +19,6 @@ exports.new             = (req, res) => {
 }
 
 exports.getAllFromId    = (req, res) => {
-
     const query         = "SELECT * FROM commantary WHERE idPublication = ?";
     const idPublication = req.params.id;
 

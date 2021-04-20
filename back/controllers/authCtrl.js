@@ -19,6 +19,7 @@ exports.login       = (req, res) => {
                                 userId: rows['0'].id,
                                 username: rows['0'].username,
                                 email: rows['0'].email,
+                                admin: rows['0'].admin,
                                 token: jwt.sign(
                                     { userId: rows['0'].id },
                                 'RANDOM_TOKEN_SECRET',
@@ -58,12 +59,19 @@ exports.register    = (req, res) => {
 
 exports.delete      = (req, res) => {
     const id        = req.body.userId;
-    const query     = 'DELETE user, commantary, publication FROM user, commantary, publication WHERE user.id = ? AND publication.idUser = ? AND (commantary.userId = ? or commantary.idOwnerPublication = ?)'
 
     connection()
         .then(con => {
-            con.query(query, [id, id, id, id])
-                .then(_ => res.status(200).json({message: 'Compte supprimé'}))
+            con.query('DELETE user FROM user WHERE id = ?', [id])
+                .then(_ => {
+                    connection()
+                        .then(con => con.query('DELETE publication FROM publication WHERE idUser = ?', [id]))
+                    connection()
+                        .then(con => con.query('DELETE commantary FROM commantary WHERE userId = ?', [id]))
+                    connection()
+                        .then(con => con.query('DELETE userLike FROM userLike WHERE userId = ?', [id]))
+                    res.status(200).json({message: 'Compte supprimé'})
+                })
                 .catch(err => res.status(400).json({err}))
         })
 }

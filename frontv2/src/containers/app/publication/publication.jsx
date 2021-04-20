@@ -145,7 +145,7 @@ class Publication extends Component {
                                 </div>
                             </div>
                             { <Commantary idPublicaiton={val.id} rank={this.props.rank} owner={val.idUser} token={this.state.token} userId={this.props.userId} username={this.props.username}/> }
-                            <p>Poster par {val.usernameUser} le {date}</p>
+                            <p>Posté par {val.usernameUser} le {date}</p>
                         </div>
                     </div>
 
@@ -174,7 +174,7 @@ class Publication extends Component {
 
             </div>
                 {publication}
-                <button onClick={this.handleClick.bind(this)} className={'btn btn-primary mt-5 mb-5'}>Plus de contenue</button></>}
+                <button onClick={this.handleClick.bind(this)} className={'btn btn-primary mt-5 mb-5'}>Plus de contenu</button></>}
         </div>
     }
 }

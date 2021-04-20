@@ -102,7 +102,7 @@ class Login extends Component {
 
     render(){
         return <Form successCallBack={this.successCB.bind(this)} form={this.state.formWanted === 'login' ? this.state.form.login : this.state.form.register}>
-            <p onClick={this.handleChangeForm.bind(this)}>Changer de formulaire</p>
+            <p onClick={this.handleChangeForm.bind(this)}>Changé de formulaire</p>
         </Form>
     }
 }

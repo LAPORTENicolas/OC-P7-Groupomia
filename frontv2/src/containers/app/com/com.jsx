@@ -147,7 +147,6 @@ class Commantary extends Component {
         let headerCom   = '';
         if (this.state.loading === false) {
             commantary = this.state.commantary.map((val, key) => {
-                console.log(this.state.rank)
                 if (this.state.rank === 1){
                     headerCom = <span className={'title-com'}><span>Poster par: <strong>{val.username}</strong></span><i onClick={this.onClickAdmin.bind(this, val)} className="fas fa-trash-alt pointer" /></span>
                 } else if (this.props.userId === val.userId) {
